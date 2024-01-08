@@ -1,18 +1,119 @@
-    description: Создать новую автоматическую СМС рассылку,
-    methode: POST,
-    url: /autoSmsSendings,
-    params: {
-        ContactGroupId: false,
-        FilterId: false,
-        Event: false,
-        SendTime: false,
-        SendType: false,
-        SmsSenderId: false,
-        SmsTemplate: false,
-        AlternativeSmsTemplate: false,
-        LocalTimeZone: false,
-        UseRecepientTimeZone: false,
-        MustTransliterate: false,
-        SendTimeOffset: false,
-        SendTimeOffsetType: false
+    "description": "Создать новую автоматическую СМС рассылку",
+    "methode": "post",
+    "url": "/autoSmsSendings",
+    "patern": {
+        'ContactGroupId": {
+            "optional:" false,
+            "description": "Идентификатор группы контактов, по которой будет проводиться автоматическая СМС рассылка. Его можно получить с помощью метода <a href='#descriptionGetContactGroups'>GET: /contactGroups</a>"
+        },
+        'FilterId": {
+            "optional:" false,
+            "description": "Идентификатор сохраненного в группе фильтра по контактам. Если не указан, рассылка будет производиться по всем контактам группы. 				Его можно получить с помощью метода <a href='#descriptionGetContactGroups'>GET: /contactGroups</a>"
+        },
+        'Event": {
+            "optional:" false,
+            "description": "Название колонки, которая будет являться событием, по которому будет проводиться автоматическая СМС рассылка.				Список все колонок можно получить с помощью метода <a href='#descriptionGetContactGroupsIdColumns'>GET: /contactGroups/{id}/columns</a>"
+        },
+        'SendTime": {
+            "optional:" false,
+            "description": "Время отправки СМС"
+        },
+        'SendType": {
+            "optional:" false,
+            "description": "Направление смещения времени отправки СМС сообщений"
+        },
+        'SmsSenderId": {
+            "optional:" false,
+            "description": "Имя отправителя СМС. Доступные имена отправителя можно получить с помощью метода <a href='#descriptionGetSmsSenderIds'>GET: /smsSenderIds"
+        },
+        'SmsTemplate": {
+            "optional:" false,
+            "description": "Шаблон (текст) СМС"
+        },
+        'AlternativeSmsTemplate": {
+            "optional:" false,
+            "description": "Альтернативный шаблон (текст)"
+        },
+        'LocalTimeZone": {
+            "optional:" false,
+            "description": "Часовой пояс, по которому будет проводиться СМС рассылка"
+        },
+        'UseRecepientTimeZone": {
+            "optional:" false,
+            "description": "True — если следует отправлять СМС по местному времени абонента"
+        },
+        'MustTransliterate": {
+            "optional:" false,
+            "description": "True — если необходимо транслитерировать текст СМС перед отправкой"
+        },
+        'SendTimeOffset": {
+            "optional:" false,
+            "description": "Количество дней, недель или месяцев, на которое надо смещать время отправки СМС"
+        },
+        'SendTimeOffsetType": {
+            "optional:" false,
+            "description": "Единица измерения смещения времени отправки СМС"
+        }
+    },
+    return_value:{
+        'ContactGroupName": {
+            "description": "Название группы контактов, по которой проводиться автоматическая СМС рассылка"
+        },
+        'ContactGroupId": {
+            "description": "Идентификатор группы контактов, по которой проводиться автоматическая СМС рассылка"
+        },
+        'Status": {
+            "description": "Статус одиночной автоматической СМС рассылки, принимает значения: Active или Paused"
+        },
+        'SmsSenderId": {
+            "description": "Имя отправителя"
+        },
+        'Id": {
+            "description": "Идентификатор автоматической СМС рассылки. "
+        },
+        'Event": {
+            "description": "Название колонки, которая является событием, по которому проводиться автоматическая СМС рассылка"
+        },
+        'SmsTemplate": {
+            "description": "Шаблон (текст) СМС"
+        },
+        'AlternativeSmsTemplate": {
+            "description": "Альтернативный шаблон (текст) СМС"
+        },
+        'Price": {
+            "description": "Стоимость СМС рассылки, руб."
+        },
+        'MessageSegmentsDelivered": {
+            "description": "Количество доставленных сегментов СМС"
+        },
+        'MessagesDelivered": {
+            "description": "Количество доставленных СМС"
+        },
+        'MessageSegmentsSent": {
+            "description": "Количество отправленных сегментов СМС"
+        },
+        'MessagesSent": {
+            "description": "Количество отправленных СМС"
+        }
+        'SendType": {
+            "description": "Направление смещения времени отправки СМС"
+        }
+        'SendTime": {
+            "description": "Время отправки СМС"
+        }
+        'SendTimeOffset": {
+            "description": "Количество дней, недель или месяцев, на которое надо смещать время отправки СМС"
+        }
+        'SendTimeOffsetType": {
+            "description": "Единица измерения смещения времени отправки СМС"
+        }
+        'UseRecepientTimeZone": {
+            "description": "True — если СМС отправляются по местному времени абонента"
+        }
+        'MustTransliterate": {
+            "description": "True — если текст СМС транслитерируется перед отправкой"
+        }
+        'StartingFromDate": {
+            "description": "Дата, начиная с которой должна начинать работать рассылка"
+        }
     }

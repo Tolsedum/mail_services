@@ -1,0 +1,80 @@
+{
+    "description": "Получить информацию об автоматических СМС рассылках в порядке от новых к старым",
+    "methode": "get",
+    "url": "autoSmsSendings",
+    "patern": {
+        'Offset": {
+            "optional:" false,
+            "description": "Количество начальных элементов в результате, которые надо пропустить"
+        },
+        'Limit": {
+            "optional:" false,
+            "description": "Количество элементов, которые необходимо вернуть (максимум — 500, по умолчанию — 50)"
+        }
+    },
+    return_value:{
+        'Items": {
+            "description": "Выбранное подмножество элементов"
+        },
+        'ContactGroupName": {
+            "description": "Название группы контактов, по которой проводиться автоматическая СМС рассылка"
+        }
+        'ContactGroupId": {
+            "description": "Идентификатор группы контактов, по которой проводиться автоматическая СМС рассылка"
+        }
+        'Status": {
+            "description": "Статус одиночной автоматической СМС рассылки, принимает значения: Active или Paused"
+        }
+        'SmsSenderId": {
+            "description": "Имя отправителя"
+        }
+        'Id": {
+            "description": "Идентификатор автоматической СМС рассылки"
+        }
+        'Event": {
+            "description": "Название колонки, которая является событием, по которому проводиться автоматическая СМС рассылка"
+        }
+        'SmsTemplate": {
+            "description": "Шаблон (текст) СМС"
+        }
+        'AlternativeSmsTemplate": {
+            "description": "Альтернативный шаблон (текст) СМС"
+        }
+        'Price": {
+            "description": "Стоимость СМС рассылки, руб."
+        }
+        'MessageSegmentsDelivered": {
+            "description": "Количество доставленных сегментов СМС"
+        }
+        'MessagesDelivered": {
+            "description": "Количество доставленных СМС"
+        }
+        'MessageSegmentsSent": {
+            "description": "Количество отправленных сегментов СМС"
+        }
+        'MessagesSent": {
+            "description": "Количество отправленных СМС"
+        }
+        'SendType": {
+            "description": "Направление смещения времени отправки СМС"
+        }
+        'SendTime": {
+            "description": "Время отправки СМС"
+        }
+        'SendTimeOffset": {
+            "description": "Количество дней, недель или месяцев, на которое надо смещать время отправки СМС"
+        }
+        'SendTimeOffsetType": {
+            "description": "Единица измерения смещения времени отправки СМС"
+        }
+        'UseRecepientTimeZone": {
+            "description": "True — если СМС отправляются по местному времени абонента"
+        }
+        'MustTransliterate": {
+            "description": "True — если текст СМС транслитерируется перед отправкой"
+        }
+        'Total": {
+            "description": "Общее количество элементов"
+        }
+    }
+}
