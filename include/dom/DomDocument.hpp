@@ -3,13 +3,14 @@
 
 #include <fstream>
 #include <list>
+#include <memory>
 #include "parser/info.hpp"
 #include "dom/Node.hpp"
 
 namespace dom{
     class DomDocument{
         std::string type_document_;
-        std::list<Node> dom_list_;
+        std::list<std::shared_ptr<Node>> dom_list_;
 
     public:
         DomDocument(){};
@@ -29,7 +30,7 @@ namespace dom{
          * @param tag_name 
          * @return Node* 
          */
-        Node* getNodeByTagName(std::string tag_name);
+        std::shared_ptr<dom::Node> getNodeByTagName(std::string tag_name);
 
         /**
          * @brief Convert node list to string html document

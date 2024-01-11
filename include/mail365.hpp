@@ -14,8 +14,8 @@ namespace mail365{
     };
 
     void createJsonApiFile(std::string file_name);
-    ReturnsParams parsStepByLi(dom::Node* node);
-    std::string genereteContentFromLi(dom::Node* node);
+    ReturnsParams parsStepByLi(std::shared_ptr<dom::Node> node);
+    std::string genereteContentFromLi(std::shared_ptr<dom::Node> node);
 
     void setMethodeAndUrlFromH4(
         std::string h4, 
@@ -23,7 +23,7 @@ namespace mail365{
         std::string &url
     );
 
-    Params insertDataInParams(dom::Node* tr);
+    Params insertDataInParams(std::shared_ptr<dom::Node> tr);
 
     std::string getInfo(
         std::string methode, 

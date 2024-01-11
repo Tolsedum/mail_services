@@ -13,11 +13,11 @@ void mail365::createJsonApiFile(std::string file_name){
     dom::DomDocument domDocument;
     domDocument.parsDocument(file_name);
  
-    dom::Node *body  = domDocument.getNodeByTagName("body");
+    std::shared_ptr<dom::Node> body  = domDocument.getNodeByTagName("body");
     if(body != nullptr){
-        dom::Node* methods = (*body).getElementById("methods");
+        std::shared_ptr<dom::Node> methods = (*body).getElementById("methods");
         if(methods != nullptr){
-            for(dom::Node* li : methods->getElementsByTagName("li")){
+            for(std::shared_ptr<dom::Node> li : methods->getElementsByTagName("li")){
                 ReturnsParams params = parsStepByLi(li);
                 
                 // std::ofstream out(path + "/" + params.block_name + ".html", std::ios::trunc);
@@ -31,7 +31,7 @@ void mail365::createJsonApiFile(std::string file_name){
     }
 }
 
-mail365::ReturnsParams mail365::parsStepByLi(dom::Node* li){
+mail365::ReturnsParams mail365::parsStepByLi(std::shared_ptr<dom::Node> li){
     ReturnsParams ret_value;
     if(li != nullptr){
         std::string methode, url, descr_func;
@@ -47,23 +47,27 @@ mail365::ReturnsParams mail365::parsStepByLi(dom::Node* li){
         ret_value.block_name = url.replace(0,1, "");
 
         std::cout<< ret_value.block_name << std::endl;
-
-        dom::Node *blockquote = li->getElementByTagName("blockquote");
+        
+        std::shared_ptr<dom::Node> blockquote = li->getElementByTagName("blockquote");
         if(blockquote != nullptr){
-            std::vector<dom::Node*> ps = blockquote
+            std::list<std::shared_ptr<dom::Node>> ps = blockquote
                 ->getElementsByTagName("p");
             
             if(!ps.empty()){
-                std::vector<dom::Node*> tab = 
+                std::list<std::shared_ptr<dom::Node>> tab = 
                     blockquote->getElementsByTagName("tbody");
                 if(!tab.empty()){
-                    descr_func = ps[0]->getInnerHtml();
+                    descr_func = ps.front()->getInnerHtml();
                     
                     int count_iter = 0;
-                    for(dom::Node* tr : tab[0]
-                        ->getElementsByTagName("tr")
-                    ){
-                        if(tr != nullptr){
+                    auto iter = ps.begin();
+                    iter++;
+                    
+                    // std::cout<< iter->get()->getInnerHtml() << std::endl;
+                    if(iter->get()->getInnerHtml() != "Ответ"){
+                        for(std::shared_ptr<dom::Node> tr : tab.front()
+                            ->getElementsByTagName("tr")
+                        ){
                             if(count_iter > 0){
                                 request_params.push_back(
                                     insertDataInParams(tr)
@@ -73,8 +77,9 @@ mail365::ReturnsParams mail365::parsStepByLi(dom::Node* li){
                             }
                         }
                     }
+                    
                     count_iter = 0;
-                    for(dom::Node* tr : tab[1]
+                    for(std::shared_ptr<dom::Node> tr : tab.back()
                         ->getElementsByTagName("tr")
                     ){
                         if(count_iter > 0){
@@ -88,6 +93,7 @@ mail365::ReturnsParams mail365::parsStepByLi(dom::Node* li){
                 }
             }
         }
+        
         ret_value.content.append(getInfo(
             methode, 
             url, 
@@ -95,7 +101,13 @@ mail365::ReturnsParams mail365::parsStepByLi(dom::Node* li){
             request_params,
             response_params
         ));
-        
+        if(ret_value.block_name == "balance"){
+            std::ofstream out("test_balance.html", std::ios::trunc);
+            if(out.is_open()){
+                out << ret_value.content;
+            }
+            out.close();
+        }
     }
     return ret_value;
 }
@@ -120,17 +132,18 @@ void mail365::setMethodeAndUrlFromH4(
     }
 }
 
-Params mail365::insertDataInParams(dom::Node* tr){
+Params mail365::insertDataInParams(std::shared_ptr<dom::Node> tr){
     Params params;
     if(tr != nullptr){
         params.is_optional = false;
-        for(dom::Node* td : 
+        int iter = 0;
+        for(std::shared_ptr<dom::Node> td : 
             tr->getElementsByTagName("td")
         ){
             if(td != nullptr){
-                if(params.name_.empty()){
+                if(iter == 0){
                     params.name_ = td->getInnerHtml();
-                }else if(params.description_.empty()){
+                }else if(iter == 1){
                     std::string descr = td->getInnerHtml();
                     std::size_t pos = descr.find('"');
                     if(pos != std::string::npos){
@@ -144,6 +157,7 @@ Params mail365::insertDataInParams(dom::Node* tr){
                     params.type_ =  td->getInnerHtml();
                 }
             }
+            iter++;
         }
     }
     
@@ -178,7 +192,7 @@ std::string mail365::getInfo(
             end = ",";
         }
         ret_value.append(
-            space + space + "\'" + var.name_ + "\": {\n" 
+            space + space + "\"" + var.name_ + "\": {\n" 
                 + space + space + space + "\"optional:\" " +  optional + ",\n"
                 + space + space + space + "\"description\": " + "\"" + var.description_ + "\""
                 + "\n" + space + space + "}" + end + "\n"
@@ -195,8 +209,9 @@ std::string mail365::getInfo(
             if(request_params.size() -1 > iter){
                 end = ",";
             }
+            // ToDo Если нет name то выводить description без скобок
             ret_value.append(
-                space + space + "\'" + var.name_ + "\": {\n" 
+                space + space + "\"" + var.name_ + "\": {\n" 
                     + space + space + space + "\"description\": " + "\"" + var.description_ + "\""
                     + "\n" + space + space + "}" + end + "\n"
             );

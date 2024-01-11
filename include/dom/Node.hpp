@@ -69,7 +69,7 @@ namespace dom{
      * @param list_elements all elements node. (attributs, class ...)
      * @param node_list all nodes locate inside with this node
      */
-    class Node{
+    class Node : public std::enable_shared_from_this<Node>{
     protected:
         bool is_deleted_;
         
@@ -89,7 +89,7 @@ namespace dom{
         /**
          * @brief all nods locate inside with this node
          */
-        std::list<Node> node_list_;
+        std::list<std::shared_ptr<Node>> node_list_;
 
         /**
          * @brief Convert attributs to string
@@ -104,7 +104,7 @@ namespace dom{
          * @param node 
          * @return Node* inserted in node_list_
          */
-        Node* appendInNodeList(Node node);
+        std::shared_ptr<Node> appendInNodeList(parser::ContentElement element);
 
         /**
          * @brief Extract tag from inner_HTML_
@@ -113,7 +113,7 @@ namespace dom{
          * @param pars 
          * @return Node* 
          */
-        Node* extractTagFromInnerHtml(
+        std::shared_ptr<Node> extractTagFromInnerHtml(
             parser::DataElement dataElement,
             parser::ParserStr pars
         );
@@ -132,6 +132,7 @@ namespace dom{
             std::string inner_HTML,
             std::string attributs
         );
+        
         virtual ~Node(){};
 
         int getCurrentNum();
@@ -171,7 +172,7 @@ namespace dom{
          * @param id 
          * @return Node* 
          */
-        Node* getElementById(std::string id);
+        std::shared_ptr<Node> getElementById(std::string id);
 
         /**
          * @brief Get the element by tag name from innerHTML_ or node_list_
@@ -179,22 +180,24 @@ namespace dom{
          * @param tag_name 
          * @return Node* 
          */
-        Node* getElementByTagName(std::string tag_name);
+        std::shared_ptr<Node> getElementByTagName(std::string tag_name);
 
         /**
          * @brief Get the elements by tag name from innerHTML_ or node_list_
          * 
          * @param tag_name 
-         * @return std::vector<Node*> 
+         * @return std::list<Node*> 
          */
-        std::vector<Node*> getElementsByTagName(std::string tag_name);
+        std::list<std::shared_ptr<Node>> getElementsByTagName(
+            std::string tag_name
+        );
 
         /**
          * @brief Get the list attributs name from innerHTML_ or node_list_
          * 
-         * @return std::vector<std::string> 
+         * @return std::list<std::string> 
          */
-        std::vector<std::string> getListAttributsName();
+        std::list<std::string> getListAttributsName();
     };
 };
 

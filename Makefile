@@ -12,7 +12,7 @@ CXXFLAGS	:= -std=c++20 -Wall -Wextra -g -ggdb
 # define library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
 #   their path using -Lpath, something like:
-LFLAGS = -ldomparser -lcurl
+LFLAGS = -lcurl #-ldomparser 
 
 # define output directory
 OUTPUT	:= output

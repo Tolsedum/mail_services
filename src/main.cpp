@@ -10,4 +10,3 @@ int main(){
     std::cout<< "search_time " << search_time/CLOCKS_PER_SEC << " сек." <<std::endl;
     return 0; 
 }
-// ToDo Переделать на умные указатели
