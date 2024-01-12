@@ -24,6 +24,8 @@ namespace mail365{
     );
 
     Params insertDataInParams(std::shared_ptr<dom::Node> tr);
+    
+    std::string getMainBlockName(std::string name);
 
     std::string getInfo(
         std::string methode, 

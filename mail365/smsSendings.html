@@ -1,0 +1,345 @@
+{
+    "description": "Создать новую СМС-рассылку",
+    "methode": "post",
+    "url": "smsSendings",
+    "patern": {
+        "SmsSenderId": {
+            "optional:" false,
+            "description": "Имя отправителя. Доступные адреса можно получить с помощью метода <a href='#descriptionGetSmsSenderIds'>GET: /smsSenderIds</a>"
+        },
+        "SendDateTime": {
+            "optional:" false,
+            "description": "Дата и время, в которое следует выполнить СМС-рассылку. Оставьте пустым для немедленной отправки. При UseRecepientTimeZone = True укажите здесь время в часовой зоне абонента. Иначе укажите здесь время UTC"
+        },
+        "UseRecepientTimeZone": {
+            "optional:" false,
+            "description": "True &#8212; если следует отправлять СМС по местному времени абонента"
+        },
+        "ContactGroupId": {
+            "optional:" false,
+            "description": "Идентификатор контактной группы, по которой нужно произвести рассылку. Его можно получить с помощью метода <a href='#descriptionGetContactGroups'>GET: /contactGroups</a>"
+        },
+        "FilterId": {
+            "optional:" false,
+            "description": "Идентификатор сохраненного в группе фильтра по контактам. Если не указан, рассылка будет производиться по всем контактам группы. 						Его можно получить с помощью метода <a href='#descriptionGetContactGroups'>GET: /contactGroups</a>"
+        },
+        "SmsTemplate": {
+            "optional:" false,
+            "description": "Шаблон основного сообщения"
+        },
+        "AlternativeSmsTemplate": {
+            "optional:" false,
+            "description": "Шаблон сообщения для пользователей с пустыми полями"
+        },
+        "Transliterate": {
+            "optional:" false,
+            "description": "True &#8212; если следует предварительно транслитерировать текст сообщения с русского на английский"
+        },
+        "PostponeScheduling": {
+            "optional:" false,
+            "description": "						Если true, то рассылка не будет поставлена в очередь сейчас, и для постановки в очередь потребуется <a href='#descriptionPostSmsSendingsIdSchedule'>отдельный вызов</a>. 						Если идентификатор контактной группы не указан, то рассылка обязана быть создана как отложенная. 						Ожидается, что перед постановкой в очередь для такой рассылки будут указаны адреса получателей с помощью <a href='#descriptionPostSmsSendingsIdRecipients'>отдельного вызова или вызовов</a>.					"
+        }
+    },
+    return_value:{
+        "UseRecepientTimeZone": {
+            "description": "True &#8212; если следует отправлять СМС по местному времени абонента"
+        },
+        "SmsTemplate": {
+            "description": "Шаблон основного сообщения"
+        },
+        "AlternativeSmsTemplate": {
+            "description": "Шаблон сообщения для пользователей с пустыми полями"
+        },
+        "SmsSenderId": {
+            "description": "Имя отправителя SMS"
+        },
+        "CreatedDate": {
+            "description": "Дата и время создания СМС-рассылки"
+        },
+        "ContactGroupId": {
+            "description": "Идентификатор группы контактов для рассылки"
+        },
+        "SendDateTime": {
+            "description": "Дата и время, в которое следует выполнить СМС-рассылку"
+        },
+        "Id": {
+            "description": "Идентификатор рассылки"
+        },
+        "ContactGroupName": {
+            "description": "Название группы контактов для рассылки"
+        }
+        "ContactFilters": {
+            "description": "Коллекция фильтров, использованная при СМС-рассылке"
+        }
+        "Field": {
+            "description": "Поле для фильтрации"
+        }
+        "Operator": {
+            "description": "Логический оператор"
+        }
+        "Value": {
+            "description": "Значение фильтра"
+        }
+        "Price": {
+            "description": "Стоимость СМС-рассылки, руб."
+        }
+        "MessagesSent": {
+            "description": "Количество отправленных СМС"
+        }
+        "MessageSegmentsSent": {
+            "description": "Количество отправленных сегментов СМС"
+        }
+        "MessagesDelivered": {
+            "description": "Количество доставленных СМС"
+        }
+        "MessageSegmentsDelivered": {
+            "description": "Количество доставленных сегментов СМС"
+        }
+        "MessagesUnDelivered": {
+            "description": "Количество недоставленных СМС"
+        }
+        "TotalUnsubscribed": {
+            "description": "Количество отписавшихся от рассылки получателей"
+        }
+        "Transliterate": {
+            "description": "True &#8212; если текст СМС транслитирируется"
+        }
+    }
+},
+{
+    "description": "Добавить получателей к смс рассылке, ещё не поставленной в очередь.",
+    "methode": "post",
+    "url": "smsSendings/{id}/recipients",
+    "patern": {
+        "Id": {
+            "optional:" false,
+            "description": "Идентификатор смс рассылки"
+        }
+    },
+    return_value:{
+            "description": "						Словарь, где каждому ключу (телефонному номеру получателя) соответствует набор дополнительных переменных в виде вложенного словаря ключ-значение.						Если дополнительных переменных нет, передайте в качестве значения в пару к номеру телефона пустой словарь.						В шаблоне смс будут заменяться все переменные из вложенного словаря, а также переменная ((Номер телефона)) - на номер телефона получателя.						Например: {'79210000001': {'Имя': 'Антон'}, '79535456594': {}}					"
+
+    }
+},
+{
+    "description": "Поставить в очередь ранее созданную смс рассылку",
+    "methode": "post",
+    "url": "smsSendings/{id}/schedule",
+    "patern": {
+        "Id": {
+            "optional:" false,
+            "description": "Идентификатор смс рассылки"
+        }
+    },
+    return_value:{
+        "Id": {
+            "description": "Идентификатор смс рассылки"
+        }
+    }
+},
+{
+    "description": "Получить информацию о созданных смс-рассылках в порядке от новых к старым",
+    "methode": "get",
+    "url": "smsSendings",
+    "patern": {
+        "Offset": {
+            "optional:" false,
+            "description": "Количество начальных элементов в результате, которые надо пропустить"
+        },
+        "Limit": {
+            "optional:" false,
+            "description": "Количество элементов, которые необходимо вернуть (максимум &#8212; 500, по умолчанию &#8212; 50)"
+        }
+    },
+    return_value:{
+        "Items": {
+            "description": "Выбранное подмножество элементов"
+        },
+        "UseRecepientTimeZone": {
+            "description": "True &#8212; если следует отправлять СМС по местному времени абонента"
+        }
+        "SmsTemplate": {
+            "description": "Шаблон основного сообщения"
+        }
+        "AlternativeSmsTemplate": {
+            "description": "Шаблон сообщения для пользователей с пустыми полями"
+        }
+        "SmsSenderId": {
+            "description": "Имя отправителя SMS"
+        }
+        "CreatedDate": {
+            "description": "Дата и время создания СМС-рассылки"
+        }
+        "ContactGroupId": {
+            "description": "Идентификатор группы контактов для рассылки"
+        }
+        "SendDateTime": {
+            "description": "Дата и время, в которое следует выполнить СМС-рассылку"
+        }
+        "Id": {
+            "description": "Идентификатор рассылки"
+        }
+        "ContactGroupName": {
+            "description": "Название группы контактов для рассылки"
+        }
+        "ContactFilters": {
+            "description": "Коллекция фильтров, использованная при СМС-рассылке"
+        }
+        "Field": {
+            "description": "Поле для фильтрации"
+        }
+        "Operator": {
+            "description": "Логический оператор"
+        }
+        "Value": {
+            "description": "Значение фильтра"
+        }
+        "Price": {
+            "description": "Стоимость СМС-рассылки, руб."
+        }
+        "MessagesSent": {
+            "description": "Количество отправленных СМС"
+        }
+        "MessageSegmentsSent": {
+            "description": "Количество отправленных сегментов СМС"
+        }
+        "MessagesDelivered": {
+            "description": "Количество доставленных СМС"
+        }
+        "MessageSegmentsDelivered": {
+            "description": "Количество доставленных сегментов СМС"
+        }
+        "MessagesUnDelivered": {
+            "description": "Количество недоставленных СМС"
+        }
+        "TotalUnsubscribed": {
+            "description": "Количество отписавшихся от рассылки получателей"
+        }
+        "Transliterate": {
+            "description": "True &#8212; если текст СМС транслитирируется"
+        }
+        "Total": {
+            "description": "Общее количество элементов"
+        }
+    }
+},
+{
+    "description": "Рассчитать стоимость смс-рассылки",
+    "methode": "post",
+    "url": "smsSendings/cost",
+    "patern": {
+        "ContactGroupId": {
+            "optional:" false,
+            "description": "Идентификатор контактной группы, по которой нужно произвести рассылку. Его можно получить с помощью метода <a href='#descriptionGetContactGroups'>GET: /contactGroups</a>"
+        },
+        "FilterId": {
+            "optional:" false,
+            "description": "Идентификатор сохраненного в группе фильтра по контактам. Если не указан, рассылка будет производиться по всем контактам группы.	 Его можно получить с помощью метода <a href='#descriptionGetContactGroups'>GET: /contactGroups</a>"
+        },
+        "SmsTemplate": {
+            "optional:" false,
+            "description": "Шаблон основного сообщения"
+        },
+        "AlternativeSmsTemplate": {
+            "optional:" false,
+            "description": "Шаблон сообщения для пользователей с пустыми полями"
+        },
+        "Transliterate": {
+            "optional:" false,
+            "description": "True &#8212; если следует предварительно транслитерировать текст сообщения с русского на английский"
+        }
+    },
+    return_value:{
+        "ContactGroupId": {
+            "description": "Идентификатор контактной группы, по которой нужно произвести рассылку. Его можно получить с помощью метода <a href='#descriptionGetContactGroups'>GET: /contactGroups</a>"
+        },
+        "FilterId": {
+            "description": "Идентификатор сохраненного в группе фильтра по контактам. Если не указан, рассылка будет производиться по всем контактам группы.	 Его можно получить с помощью метода <a href='#descriptionGetContactGroups'>GET: /contactGroups</a>"
+        },
+        "SmsTemplate": {
+            "description": "Шаблон основного сообщения"
+        },
+        "AlternativeSmsTemplate": {
+            "description": "Шаблон сообщения для пользователей с пустыми полями"
+        },
+        "Transliterate": {
+            "description": "True &#8212; если следует предварительно транслитерировать текст сообщения с русского на английский"
+        }
+    }
+},
+{
+    "description": "Получить информацию о конкретной смс-рассылке",
+    "methode": "get",
+    "url": "smsSendings/{id}",
+    "patern": {
+        "Id": {
+            "optional:" false,
+            "description": "Идентификатор смс-рассылки. Его можно получить при помощи метода <a href='#descriptionGetSmsSendings'>GET: /smsSendings</a>"
+        }
+    },
+    return_value:{
+        "UseRecepientTimeZone": {
+            "description": "True &#8212; если следует отправлять СМС по местному времени абонента"
+        }
+        "SmsTemplate": {
+            "description": "Шаблон основного сообщения"
+        }
+        "AlternativeSmsTemplate": {
+            "description": "Шаблон сообщения для пользователей с пустыми полями"
+        }
+        "SmsSenderId": {
+            "description": "Имя отправителя SMS"
+        }
+        "CreatedDate": {
+            "description": "Дата и время создания СМС-рассылки"
+        }
+        "ContactGroupId": {
+            "description": "Идентификатор группы контактов для рассылки"
+        }
+        "SendDateTime": {
+            "description": "Дата и время, в которое следует выполнить СМС-рассылку"
+        }
+        "Id": {
+            "description": "Идентификатор рассылки"
+        }
+        "ContactGroupName": {
+            "description": "Название группы контактов для рассылки"
+        }
+        "ContactFilters": {
+            "description": "Коллекция фильтров, использованная при СМС-рассылке"
+        }
+        "Field": {
+            "description": "Поле для фильтрации"
+        }
+        "Operator": {
+            "description": "Логический оператор"
+        }
+        "Value": {
+            "description": "Значение фильтра"
+        }
+        "Price": {
+            "description": "Стоимость СМС-рассылки, руб."
+        }
+        "MessagesSent": {
+            "description": "Количество отправленных СМС"
+        }
+        "MessageSegmentsSent": {
+            "description": "Количество отправленных сегментов СМС"
+        }
+        "MessagesDelivered": {
+            "description": "Количество доставленных СМС"
+        }
+        "MessageSegmentsDelivered": {
+            "description": "Количество доставленных сегментов СМС"
+        }
+        "MessagesUnDelivered": {
+            "description": "Количество недоставленных СМС"
+        }
+        "TotalUnsubscribed": {
+            "description": "Количество отписавшихся от рассылки получателей"
+        }
+        "Transliterate": {
+            "description": "True &#8212; если текст СМС транслитирируется"
+        }
+    }
+}

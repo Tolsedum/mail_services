@@ -1,15 +1,23 @@
 #include "mail365.hpp"
+std::string mail365::getMainBlockName(std::string name){
+    std::size_t pos = name.find("/");
+    if(pos != std::string::npos){
+        name.erase(pos, name.size());
+    }
+    return name;
+}
 
 void mail365::createJsonApiFile(std::string file_name){
     std::string path = "mail365";
+    if(!std::filesystem::exists(path)){
+        std::filesystem::create_directory(path);
+    }
+    file_name = path + "/" + file_name;
     if(!std::filesystem::exists(file_name)){
         std::string link = "https://www.mail365.ru/api.php";
         std::string content = getHttpPage(link, file_name);
     }
-    if(!std::filesystem::exists(path)){
-        std::filesystem::create_directory(path);
-    }
-    // std::string output_data;
+    
     dom::DomDocument domDocument;
     domDocument.parsDocument(file_name);
  
@@ -17,16 +25,34 @@ void mail365::createJsonApiFile(std::string file_name){
     if(body != nullptr){
         std::shared_ptr<dom::Node> methods = (*body).getElementById("methods");
         if(methods != nullptr){
+            std::map<std::string, std::vector<ReturnsParams>> conteiner;
             for(std::shared_ptr<dom::Node> li : methods->getElementsByTagName("li")){
                 ReturnsParams params = parsStepByLi(li);
-                
-                // std::ofstream out(path + "/" + params.block_name + ".html", std::ios::trunc);
-                // if(out.is_open()){
-                //     out << params.content;
-                // }
-                // out.close();
-                // break;
-            } 
+                std::string block_name = getMainBlockName(params.block_name);
+                if(
+                    auto search = conteiner.find(block_name);
+                    search != conteiner.end()
+                ){
+                    conteiner[block_name].push_back(params);
+                }else{
+                    conteiner[block_name] = std::vector<ReturnsParams>{params};
+                }
+            }
+            for(auto var : conteiner){
+                std::string content;
+                for(auto params : var.second){
+                    content.append(params.content);
+                    content.append(",\n");
+                }
+                content.erase(content.size() - 2, content.size());
+                std::cout<< path + "/" + var.first + ".html" << std::endl;
+
+                std::ofstream out(path + "/" + var.first + ".html", std::ios::trunc);
+                if(out.is_open()){
+                    out << content;
+                }
+                out.close();
+            }
         }
     }
 }
@@ -46,8 +72,6 @@ mail365::ReturnsParams mail365::parsStepByLi(std::shared_ptr<dom::Node> li){
         ); 
         ret_value.block_name = url.replace(0,1, "");
 
-        std::cout<< ret_value.block_name << std::endl;
-        
         std::shared_ptr<dom::Node> blockquote = li->getElementByTagName("blockquote");
         if(blockquote != nullptr){
             std::list<std::shared_ptr<dom::Node>> ps = blockquote
@@ -62,8 +86,6 @@ mail365::ReturnsParams mail365::parsStepByLi(std::shared_ptr<dom::Node> li){
                     int count_iter = 0;
                     auto iter = ps.begin();
                     iter++;
-                    
-                    // std::cout<< iter->get()->getInnerHtml() << std::endl;
                     if(iter->get()->getInnerHtml() != "Ответ"){
                         for(std::shared_ptr<dom::Node> tr : tab.front()
                             ->getElementsByTagName("tr")
@@ -209,12 +231,22 @@ std::string mail365::getInfo(
             if(request_params.size() -1 > iter){
                 end = ",";
             }
+            if(var.name_.empty()){
+                ret_value.append(
+                    space + space + "\"description\": " 
+                        + "\"" + var.description_ + "\""
+                        + end + "\n"
+                );
+            }else{
+                ret_value.append(
+                    space + space + "\"" + var.name_ + "\": {\n" 
+                        + space + space + space + "\"description\": " 
+                        + "\"" + var.description_ + "\""
+                        + "\n" + space + space + "}" + end + "\n"
+                );
+            }
             // ToDo Если нет name то выводить description без скобок
-            ret_value.append(
-                space + space + "\"" + var.name_ + "\": {\n" 
-                    + space + space + space + "\"description\": " + "\"" + var.description_ + "\""
-                    + "\n" + space + space + "}" + end + "\n"
-            );
+            
             iter++;
         }
         ret_value.append(space + "}\n}");

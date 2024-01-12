@@ -1,0 +1,38 @@
+{
+    "description": "Добавить имя отправителя SMS (Sender ID)",
+    "methode": "post",
+    "url": "smsSenderIds",
+    "patern": {
+        "SenderId": {
+            "optional:" false,
+            "description": "Имя отправителя (Sender ID)"
+        }
+    },
+    return_value:{
+            "description": "Добавленное имя отправителя SMS (Sender ID)"
+
+    }
+},
+{
+    "description": "Получить заверенные имена отправителя SMS (Sender ID) в алфавитном порядке",
+    "methode": "get",
+    "url": "smsSenderIds",
+    "patern": {
+        "Offset": {
+            "optional:" false,
+            "description": "Количество начальных элементов в результате, которые надо пропустить"
+        },
+        "Limit": {
+            "optional:" false,
+            "description": "Количество элементов, которые необходимо вернуть (максимум &#8212; 500, по умолчанию &#8212; 50)"
+        }
+    },
+    return_value:{
+        "Items": {
+            "description": "Выбранное подмножество элементов"
+        },
+        "Total": {
+            "description": "Общее количество элементов"
+        }
+    }
+}

@@ -1,0 +1,98 @@
+{
+    "description": "Получить список Email шаблонов",
+    "methode": "get",
+    "url": "emailTemplates",
+    "patern": {
+        "SearchQuery": {
+            "optional:" false,
+            "description": "Cтрока поиска шаблона по имени"
+        },
+        "Offset": {
+            "optional:" false,
+            "description": "Количество начальных элементов в результате, которые надо пропустить (по умолчанию - 0)"
+        },
+        "Limit": {
+            "optional:" false,
+            "description": "Количество элементов, которые необходимо вернуть (максимум — 500, по умолчанию — 50)"
+        }
+    },
+    return_value:{
+        "Items": {
+            "description": "Выбранное подмножество элементов"
+        },
+        "Id": {
+            "description": "Идентификатор"
+        },
+        "Name": {
+            "description": "Имя шаблона"
+        }
+        "Description": {
+            "description": "Описание шаблона"
+        }
+        "Total": {
+            "description": "Общее количество элементов"
+        }
+    }
+},
+{
+    "description": "Получить Email шаблон по идентификатору",
+    "methode": "get",
+    "url": "emailTemplates/{id}",
+    "patern": {
+        "Id": {
+            "optional:" false,
+            "description": "Идентификатор шаблона. Его можно получить при помощи метода <a href='#descriptionGetEmailTemplates'>GET: /emailTemplates</a>"
+        }
+    },
+    return_value:{
+        "Name": {
+            "description": "Имя шаблона"
+        }
+        "BodyHtml": {
+            "description": "Основной текст"
+        }
+        "AlternativeBodyHtml": {
+            "description": "Альтернативный текст"
+        }
+        "CreatedDate": {
+            "description": "Дата создания"
+        }
+        "Subject": {
+            "description": "Основная тема"
+        }
+        "AlternativeSubject": {
+            "description": "Альтернативная тема"
+        }
+    }
+},
+{
+    "description": "Получить Email шаблон по имени",
+    "methode": "get",
+    "url": "emailTemplates/name/{name}",
+    "patern": {
+        "Name": {
+            "optional:" false,
+            "description": "Имя шаблона. Его можно получить при помощи метода <a href='#descriptionGetEmailTemplates'>GET: /emailTemplates</a>"
+        }
+    },
+    return_value:{
+        "Name": {
+            "description": "Имя шаблона"
+        }
+        "BodyHtml": {
+            "description": "Основной текст"
+        }
+        "AlternativeBodyHtml": {
+            "description": "Альтернативный текст"
+        }
+        "CreatedDate": {
+            "description": "Дата создания"
+        }
+        "Subject": {
+            "description": "Основная тема"
+        }
+        "AlternativeSubject": {
+            "description": "Альтернативная тема"
+        }
+    }
+}

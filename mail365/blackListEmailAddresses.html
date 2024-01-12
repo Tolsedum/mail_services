@@ -1,0 +1,183 @@
+{
+    "description": "Получить информацию об email-адресах в чёрном списке, начиная с недавно добавленных",
+    "methode": "get",
+    "url": "blackListEmailAddresses",
+    "patern": {
+        "StartUtcDateTime": {
+            "optional:" false,
+            "description": "Фильтр по дате добавления, нижняя граница (UTC)"
+        },
+        "EndUtcDateTime": {
+            "optional:" false,
+            "description": "Фильтр по дате добавления, верхняя граница (UTC)"
+        },
+        "SearchString": {
+            "optional:" false,
+            "description": "Строка поиска по email-адресам"
+        },
+        "Offset": {
+            "optional:" false,
+            "description": "Количество начальных элементов в результате, которые надо пропустить"
+        },
+        "Limit": {
+            "optional:" false,
+            "description": "Количество элементов, которые необходимо вернуть (максимум &#8212; 500, по умолчанию &#8212; 50)"
+        }
+    },
+    return_value:{
+        "Items": {
+            "description": "Выбранное подмножество элементов"
+        },
+        "Email": {
+            "description": "Email-адрес, занесённый в чёрный список"
+        },
+        "UtcDateAdded": {
+            "description": "Дата занесения email-адреса в чёрный список (UTC)"
+        },
+        "Comments": {
+            "description": "Комментарий к записи в чёрном списке"
+        },
+        "Reason": {
+            "description": "Причина по который email-адрес был занесён в чёрный список, принимает значения: CustomerAdded, UnsubscribedByEmailLink"
+        }
+        "Total": {
+            "description": "Общее количество элементов"
+        }
+    }
+},
+{
+    "description": "Добавить email-адрес в чёрный список",
+    "methode": "post",
+    "url": "blackListEmailAddresses",
+    "patern": {
+        "Email": {
+            "optional:" false,
+            "description": "Email-адрес, подлежащий занесению в чёрный список"
+        },
+        "Comments": {
+            "optional:" false,
+            "description": "Комментарий к записи в чёрном списке (максимум — 100 символов)"
+        }
+    },
+    return_value:{
+        "Email": {
+            "description": "Email-адрес, занесённый в чёрный список"
+        },
+        "UtcDateAdded": {
+            "description": "Дата занесения email-адреса в чёрный список (UTC)"
+        }
+        "Comments": {
+            "description": "Комментарий к записи в чёрном списке"
+        }
+        "Reason": {
+            "description": "Причина по который email-адрес был занесён в чёрный список, принимает значения: CustomerAdded, UnsubscribedByEmailLink"
+        }
+    }
+},
+{
+    "description": "Получить информацию о конкретном email-адресе из чёрного списка",
+    "methode": "get",
+    "url": "blackListEmailAddresses/{email}",
+    "patern": {
+        "Email": {
+            "optional:" false,
+            "description": "Email-адрес, по которому нужно получить информацию"
+        }
+    },
+    return_value:{
+        "Email": {
+            "description": "Email-адрес, занесённый в чёрный список"
+        }
+        "UtcDateAdded": {
+            "description": "Дата занесения email-адреса в чёрный список (UTC)"
+        }
+        "Comments": {
+            "description": "Комментарий к записи в чёрном списке"
+        }
+        "Reason": {
+            "description": "Причина по который email-адрес был занесён в чёрный список, принимает значения: CustomerAdded, UnsubscribedByEmailLink"
+        }
+    }
+},
+{
+    "description": "Изменить запись об email-адресе в чёрном списке",
+    "methode": "post",
+    "url": "blackListEmailAddresses/{email}",
+    "patern": {
+        "Email": {
+            "optional:" false,
+            "description": "Email-адрес, сведения о котором нужно изменить"
+        }
+    },
+    return_value:{
+        "Email": {
+            "description": "Email-адрес, занесённый в чёрный список"
+        }
+        "UtcDateAdded": {
+            "description": "Дата занесения email-адреса в чёрный список (UTC)"
+        }
+        "Comments": {
+            "description": "Комментарий к записи в чёрном списке"
+        }
+        "Reason": {
+            "description": "Причина по который email-адрес был занесён в чёрный список, принимает значения: CustomerAdded, UnsubscribedByEmailLink"
+        }
+    }
+},
+{
+    "description": "Изменить запись об email-адресе в чёрном списке",
+    "methode": "put",
+    "url": "blackListEmailAddresses/{email}",
+    "patern": {
+        "Email": {
+            "optional:" false,
+            "description": "Email-адрес, сведения о котором нужно изменить"
+        }
+    },
+    return_value:{
+        "Email": {
+            "description": "Email-адрес, занесённый в чёрный список"
+        }
+        "UtcDateAdded": {
+            "description": "Дата занесения email-адреса в чёрный список (UTC)"
+        }
+        "Comments": {
+            "description": "Комментарий к записи в чёрном списке"
+        }
+        "Reason": {
+            "description": "Причина по который email-адрес был занесён в чёрный список, принимает значения: CustomerAdded, UnsubscribedByEmailLink"
+        }
+    }
+},
+{
+    "description": "Исключить email-адрес из чёрного списка",
+    "methode": "delete",
+    "url": "blackListEmailAddresses/{email}",
+    "patern": {
+        "Email": {
+            "optional:" false,
+            "description": "Email-адрес, подлежащий исключению из чёрного списка"
+        }
+    },
+    return_value:{
+        "Email": {
+            "description": "Email-адрес, подлежащий исключению из чёрного списка"
+        }
+    }
+},
+{
+    "description": "Исключить email-адрес из чёрного списка",
+    "methode": "post",
+    "url": "blackListEmailAddresses/{email}/delete",
+    "patern": {
+        "Email": {
+            "optional:" false,
+            "description": "Email-адрес, подлежащий исключению из чёрного списка"
+        }
+    },
+    return_value:{
+        "Email": {
+            "description": "Email-адрес, подлежащий исключению из чёрного списка"
+        }
+    }
+}

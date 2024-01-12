@@ -1,0 +1,183 @@
+{
+    "description": "Получить информацию о телефонных номерах в чёрном списке начиная с недавно добавленных",
+    "methode": "get",
+    "url": "blackListPhoneNumbers",
+    "patern": {
+        "StartUtcDateTime": {
+            "optional:" false,
+            "description": "Фильтр по дате добавления, нижняя граница (UTC)"
+        },
+        "EndUtcDateTime": {
+            "optional:" false,
+            "description": "Фильтр по дате добавления, верхняя граница (UTC)"
+        },
+        "SearchString": {
+            "optional:" false,
+            "description": "Строка поиска по номеру телефона"
+        },
+        "Offset": {
+            "optional:" false,
+            "description": "Количество начальных элементов в результате, которые надо пропустить"
+        },
+        "Limit": {
+            "optional:" false,
+            "description": "Количество элементов, которые необходимо вернуть (максимум &#8212; 500, по умолчанию &#8212; 50)"
+        }
+    },
+    return_value:{
+        "Items": {
+            "description": "Выбранное подмножество элементов"
+        },
+        "PhoneNumber": {
+            "description": "Номер телефона, занесённый в чёрный список"
+        },
+        "UtcDateAdded": {
+            "description": "Дата занесения в чёрный список (UTC)"
+        },
+        "Comments": {
+            "description": "Комментарий к записи в чёрном списке"
+        },
+        "Reason": {
+            "description": "Причина занесения в чёрный список, принимает значения: CustomerAdded, SmsnenadoAdded"
+        }
+        "Total": {
+            "description": "Общее количество элементов"
+        }
+    }
+},
+{
+    "description": "Добавить телефонный номер в чёрный список",
+    "methode": "post",
+    "url": "blackListPhoneNumbers",
+    "patern": {
+        "PhoneNumber": {
+            "optional:" false,
+            "description": "Номер телефона, подлежащий занесению в чёрный список"
+        },
+        "Comments": {
+            "optional:" false,
+            "description": "Комментарий к записи в чёрном списке (максимум — 100 символов)"
+        }
+    },
+    return_value:{
+        "PhoneNumber": {
+            "description": "Номер телефона, занесенённый в чёрный список"
+        },
+        "UtcDateAdded": {
+            "description": "Дата занесения в чёрный список (UTC)"
+        }
+        "Comments": {
+            "description": "Комментарий к записи в чёрном списке"
+        }
+        "Reason": {
+            "description": "Причина по который email-адрес был занесён в чёрный список, принимает значения: CustomerAdded, UnsubscribedByEmailLink"
+        }
+    }
+},
+{
+    "description": "Изменить запись о телефоне в чёрном списке",
+    "methode": "post",
+    "url": "blackListPhoneNumbers/{phoneNumber}",
+    "patern": {
+        "PhoneNumber": {
+            "optional:" false,
+            "description": "Телефонный номер, сведения о котором нужно изменить"
+        }
+    },
+    return_value:{
+        "PhoneNumber": {
+            "description": "Номер телефона, засенённый в чёрный список"
+        }
+        "UtcDateAdded": {
+            "description": "Дата занесения в чёрный список (UTC)"
+        }
+        "Comments": {
+            "description": "Комментарий к записи в чёрном списке"
+        }
+        "Reason": {
+            "description": "Причина занесения в чёрный список, принимает значения: CustomerAdded, SmsnenadoAdded"
+        }
+    }
+},
+{
+    "description": "Изменить запись о телефоне в чёрном списке",
+    "methode": "put",
+    "url": "blackListPhoneNumbers/{phoneNumber}",
+    "patern": {
+        "PhoneNumber": {
+            "optional:" false,
+            "description": "Телефонный номер, сведения о котором нужно изменить"
+        }
+    },
+    return_value:{
+        "PhoneNumber": {
+            "description": "Номер телефона, засенённый в чёрный список"
+        }
+        "UtcDateAdded": {
+            "description": "Дата занесения в чёрный список (UTC)"
+        }
+        "Comments": {
+            "description": "Комментарий к записи в чёрном списке"
+        }
+        "Reason": {
+            "description": "Причина занесения в чёрный список, принимает значения: CustomerAdded, SmsnenadoAdded"
+        }
+    }
+},
+{
+    "description": "Исключить номер телефона из чёрного списка",
+    "methode": "delete",
+    "url": "blackListPhoneNumbers/{phoneNumber}",
+    "patern": {
+        "PhoneNumber": {
+            "optional:" false,
+            "description": "Телефонный номер, подлежащий исключению из чёрного списка"
+        }
+    },
+    return_value:{
+        "PhoneNumber": {
+            "description": "Телефонный номер, подлежащий исключению из чёрного списка"
+        }
+    }
+},
+{
+    "description": "Получить информацию о конкретном телефонном номере из чёрного списка",
+    "methode": "get",
+    "url": "blackListPhoneNumbers/{phoneNumber}",
+    "patern": {
+        "PhoneNumber": {
+            "optional:" false,
+            "description": "Телефонный номер, по которому нужно получить информацию"
+        }
+    },
+    return_value:{
+        "PhoneNumber": {
+            "description": "Номер телефона, засенённый в чёрный список"
+        }
+        "UtcDateAdded": {
+            "description": "Дата занесения в чёрный список (UTC)"
+        }
+        "Comments": {
+            "description": "Комментарий к записи в чёрном списке"
+        }
+        "Reason": {
+            "description": "Причина занесения в чёрный список, принимает значения: CustomerAdded, SmsnenadoAdded"
+        }
+    }
+},
+{
+    "description": "Исключить номер телефона из чёрного списка",
+    "methode": "post",
+    "url": "blackListPhoneNumbers/{phoneNumber}/delete",
+    "patern": {
+        "PhoneNumber": {
+            "optional:" false,
+            "description": "Телефонный номер, подлежащий исключению из чёрного списка"
+        }
+    },
+    return_value:{
+        "PhoneNumber": {
+            "description": "Телефонный номер, подлежащий исключению из чёрного списка"
+        }
+    }
+}

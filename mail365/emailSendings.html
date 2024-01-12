@@ -1,0 +1,437 @@
+{
+    "description": "Создать новую email-рассылку",
+    "methode": "post",
+    "url": "emailSendings",
+    "patern": {
+        "SenderEmailAddress": {
+            "optional:" false,
+            "description": "Адрес email отправителя, который нужно использовать для рассылки. Должен быть в списке заверенных адресов отправителя. 	Доступные адреса отправителя можно узнать с помощью <a href='#descriptionGetEmailAddresses'>GET: /emailAddresses</a>"
+        },
+        "SubjectTemplate": {
+            "optional:" false,
+            "description": "Шаблон темы основного сообщения"
+        },
+        "BodyTemplate": {
+            "optional:" false,
+            "description": "Шаблон тела основного сообщения"
+        },
+        "AlternativeSubjectTemplate": {
+            "optional:" false,
+            "description": "Шаблон темы сообщения для пользователей с пустыми полями"
+        },
+        "AlternativeBodyTemplate": {
+            "optional:" false,
+            "description": "Шаблон тела сообщения для пользователей с пустыми полями"
+        },
+        "ContactGroupId": {
+            "optional:" false,
+            "description": "Идентификатор контактной группы, по которой нужно произвести рассылку. Его можно узнать с помощью метода <a href='#descriptionGetContactGroups'>GET: /contactGroups</a>"
+        },
+        "FilterId": {
+            "optional:" false,
+            "description": "Идентификатор сохраненного в группе фильтра по контактам. Если не указан, рассылка будет производиться по всем контактам группы. 	Его можно узнать с помощью метода <a href='#descriptionGetContactGroups'>GET: /contactGroups</a>"
+        },
+        "SendDateTime": {
+            "optional:" false,
+            "description": "Дата и время запуска рассылки"
+        },
+        "UnsubscribeText": {
+            "optional:" false,
+            "description": "Текст ссылки для отписки"
+        },
+        "SubscribeReason": {
+            "optional:" false,
+            "description": "Текст причины для подписки"
+        },
+        "PostponeScheduling": {
+            "optional:" false,
+            "description": "Если true, то рассылка не будет поставлена в очередь сейчас, и для постановки в очередь потребуется <a href='#descriptionPostEmailSendingsIdSchedule'>отдельный вызов</a>. Если идентификатор контактной группы не указан, то рассылка обязана быть создана как отложенная.Ожидается, что перед постановкой в очередь для такой рассылки будут указаны адреса получателей с помощью <a href='#descriptionPostEmailSendingsIdRecipients'>отдельного вызова или вызовов</a>."
+        },
+        "WebVersionText": {
+            "optional:" false,
+            "description": "Текст ссылки для просмотра письма в браузере"
+        }
+    },
+    return_value:{
+        "SendingId": {
+            "description": "Идентификатор"
+        },
+        "SenderAddress": {
+            "description": "Email-адрес отправителя"
+        },
+        "SubjectTemplate": {
+            "description": "&#8216;Тема&#8217; письма"
+        },
+        "AlternativeSubjectTemplate": {
+            "description": "Альтернативная &#8216;тема&#8217; письма"
+        },
+        "BodyTemplate": {
+            "description": "&#8216;Тело&#8217; письма"
+        },
+        "AlternativeBodyTemplate": {
+            "description": "Альтернативное &#8216;тело&#8217; письма"
+        },
+        "ContactGroupName": {
+            "description": "Название группы контактов для рассылки"
+        },
+        "ContactGroupId": {
+            "description": "Идентификатор группы контактов для рассылки"
+        },
+        "TotalSentCount": {
+            "description": "Количество отправленных писем"
+        },
+        "TotalDeliveredCount": {
+            "description": "Количество доставленных писем"
+        },
+        "TotalBouncedCount": {
+            "description": "Количество отклонённых писем"
+        },
+        "TotalSpamCount": {
+            "description": "Количество писем отмеченных как &#8216;спам&#8217;"
+        }
+        "TotalOpenedCount": {
+            "description": "Количество открытых писем"
+        }
+        "Price": {
+            "description": "Стоимость рассылки, руб."
+        }
+        "DateOfStart": {
+            "description": "Дата запуска рассылки"
+        }
+    }
+},
+{
+    "description": "Добавить получателей к email-рассылке, ещё не поставленной в очередь. Метод можно вызывать много раз для дополнения списка",
+    "methode": "post",
+    "url": "emailSendings/{id}/recipients",
+    "patern": {
+        "Id": {
+            "optional:" false,
+            "description": "Идентификатор email-рассылки"
+        }
+    },
+    return_value:{
+            "description": "Словарь, где каждому ключу (email-адресу получателя) соответствует набор дополнительных переменных в виде вложенного словаря ключ-значение. Если дополнительных переменных нет, передайте в качестве значения в пару к email-адресу пустой словарь.В шаблоне письма будут заменяться все переменные из вложенного словаря, а также переменная ((Электронная почта)) - на email-адрес получателя. Например: {'aokhrimenko@smsdelivery.ru': {'Имя': 'Антон'}, 'mkirillov@smsdelivery.ru': {'Имя': 'Михаил'}}"
+
+    }
+},
+{
+    "description": "Поставить в очередь ранее созданную email-рассылку",
+    "methode": "post",
+    "url": "emailSendings/{id}/schedule",
+    "patern": {
+        "Id": {
+            "optional:" false,
+            "description": "Идентификатор email-рассылки"
+        }
+    },
+    return_value:{
+        "Id": {
+            "description": "Идентификатор email-рассылки"
+        }
+    }
+},
+{
+    "description": "Создать новую email-рассылку по заранее подготовленному шаблону. Шаблон выбирается по шифрованному идентификатору. ",
+    "methode": "post",
+    "url": "emailSendings/templateId/{id}",
+    "patern": {
+        "Id": {
+            "optional:" false,
+            "description": "Шифрованный идентификатор шаблона"
+        }
+    },
+    return_value:{
+        "SenderEmailAddress": {
+            "description": "Адрес email отправителя, который нужно использовать для рассылки. Должен быть в списке заверенных адресов отправителя. 	Доступные адреса отправителя можно узнать с помощью <a href='#descriptionGetEmailAddresses'>GET: /emailAddresses</a>"
+        }
+        "ContactGroupId": {
+            "description": "Идентификатор контактной группы, по которой нужно произвести рассылку. Его можно узнать с помощью метода <a href='#descriptionGetContactGroups'>GET: /contactGroups</a>"
+        }
+        "FilterId": {
+            "description": "Идентификатор сохраненного в группе фильтра по контактам. Если не указан, рассылка будет производиться по всем контактам группы. 	Его можно узнать с помощью метода <a href='#descriptionGetContactGroups'>GET: /contactGroups</a>"
+        }
+        "SendDateTime": {
+            "description": "Дата и время запуска рассылки"
+        }
+        "UnsubscribeText": {
+            "description": "Текст ссылки для отписки"
+        }
+        "SubscribeReason": {
+            "description": "Текст причины для подписки"
+        }
+        "WebVersionText": {
+            "description": "Текст ссылки для просмотра письма в браузере"
+        }
+    }
+},
+{
+    "description": "Создать новую email-рассылку по заранее подготовленному шаблону. Шаблон выбирается по имени.",
+    "methode": "post",
+    "url": "emailSendings/templateName/{name}",
+    "patern": {
+        "Name": {
+            "optional:" false,
+            "description": "Имя шаблона"
+        }
+    },
+    return_value:{
+        "SenderEmailAddress": {
+            "description": "Адрес email отправителя, который нужно использовать для рассылки. Должен быть в списке заверенных адресов отправителя. 	Доступные адреса отправителя можно узнать с помощью <a href='#descriptionGetEmailAddresses'>GET: /emailAddresses</a>"
+        }
+        "ContactGroupId": {
+            "description": "Идентификатор контактной группы, по которой нужно произвести рассылку. Его можно узнать с помощью метода <a href='#descriptionGetContactGroups'>GET: /contactGroups</a>"
+        }
+        "FilterId": {
+            "description": "Идентификатор сохраненного в группе фильтра по контактам. Если не указан, рассылка будет производиться по всем контактам группы. 	Его можно узнать с помощью метода <a href='#descriptionGetContactGroups'>GET: /contactGroups</a>"
+        }
+        "SendDateTime": {
+            "description": "Дата и время запуска рассылки"
+        }
+        "UnsubscribeText": {
+            "description": "Текст ссылки для отписки"
+        }
+        "SubscribeReason": {
+            "description": "Текст причины для подписки"
+        }
+        "WebVersionText": {
+            "description": "Текст ссылки для просмотра письма в браузере"
+        }
+    }
+},
+{
+    "description": "Получить информацию о созданных email-рассылках в порядке от новых к старым",
+    "methode": "get",
+    "url": "emailSendings",
+    "patern": {
+        "Offset": {
+            "optional:" false,
+            "description": "Количество начальных элементов в результате, которые надо пропустить"
+        },
+        "Limit": {
+            "optional:" false,
+            "description": "Количество элементов, которые необходимо вернуть (максимум &#8212; 500, по умолчанию &#8212; 50)"
+        }
+    },
+    return_value:{
+        "Items": {
+            "description": "Выбранное подмножество элементов"
+        },
+        "SendingId": {
+            "description": "Идентификатор"
+        }
+        "SenderAddress": {
+            "description": "Email-адрес отправителя"
+        }
+        "SubjectTemplate": {
+            "description": "&#8216;Тема&#8217; письма"
+        }
+        "AlternativeSubjectTemplate": {
+            "description": "Альтернативная &#8216;тема&#8217; письма"
+        }
+        "BodyTemplate": {
+            "description": "&#8216;Тело&#8217; письма"
+        }
+        "AlternativeBodyTemplate": {
+            "description": "Альтернативное &#8216;тело&#8217; письма"
+        }
+        "ContactGroupName": {
+            "description": "Название группы контактов для рассылки"
+        }
+        "ContactGroupId": {
+            "description": "Идентификатор группы контактов для рассылки"
+        }
+        "TotalSentCount": {
+            "description": "Количество отправленных писем"
+        }
+        "TotalDeliveredCount": {
+            "description": "Количество доставленных писем"
+        }
+        "TotalBouncedCount": {
+            "description": "Количество отклонённых писем"
+        }
+        "TotalSpamCount": {
+            "description": "Количество писем отмеченных как &#8216;спам&#8217;"
+        }
+        "TotalOpenedCount": {
+            "description": "Количество открытых писем"
+        }
+        "Price": {
+            "description": "Стоимость рассылки, руб."
+        }
+        "DateOfStart": {
+            "description": "Дата запуска рассылки"
+        }
+        "Total": {
+            "description": "Общее количество элементов"
+        }
+    }
+},
+{
+    "description": "Получить стоимость email-рассылки",
+    "methode": "post",
+    "url": "emailSendings/cost",
+    "patern": {
+        "ContactGroupId": {
+            "optional:" false,
+            "description": "Идентификатор контактной группы, по которой нужно произвести рассылку. Его можно получить с помощью метода <a href='#descriptionGetContactGroups'>GET: /СontactGroups</a>"
+        },
+        "FilterId": {
+            "optional:" false,
+            "description": "Идентификатор сохраненного в группе фильтра по контактам. Если не указан, рассылка будет производиться по всем контактам группы. 	Его можно получить с помощью метода <a href='#descriptionGetContactGroups'>GET: /СontactGroups</a>"
+        }
+    },
+    return_value:{
+        "TotalCost": {
+            "description": "Стоимость рассылки, руб."
+        },
+        "Balance": {
+            "description": "Количество денег на счету, руб."
+        }
+    }
+},
+{
+    "description": "Получить информацию о конкретной email-рассылке",
+    "methode": "get",
+    "url": "emailSendings/{id}",
+    "patern": {
+        "Id": {
+            "optional:" false,
+            "description": "Идентификатор email-рассылки. Его можно получить с помощью метода <a href='#descriptionGetEmailSendings'>GET: /emailSendings</a>"
+        }
+    },
+    return_value:{
+        "SendingId": {
+            "description": "Идентификатор"
+        }
+        "SenderAddress": {
+            "description": "Email-адрес отправителя"
+        }
+        "SubjectTemplate": {
+            "description": "&#8216;Тема&#8217; письма"
+        }
+        "AlternativeSubjectTemplate": {
+            "description": "Альтернативная &#8216;тема&#8217; письма"
+        }
+        "BodyTemplate": {
+            "description": "&#8216;Тело&#8217; письма"
+        }
+        "AlternativeBodyTemplate": {
+            "description": "Альтернативное &#8216;тело&#8217; письма"
+        }
+        "ContactGroupName": {
+            "description": "Название группы контактов для рассылки"
+        }
+        "ContactGroupId": {
+            "description": "Идентификатор группы контактов для рассылки"
+        }
+        "TotalSentCount": {
+            "description": "Количество отправленных писем"
+        }
+        "TotalDeliveredCount": {
+            "description": "Количество доставленных писем"
+        }
+        "TotalBouncedCount": {
+            "description": "Количество отклонённых писем"
+        }
+        "TotalSpamCount": {
+            "description": "Количество писем отмеченных как &#8216;спам&#8217;"
+        }
+        "TotalOpenedCount": {
+            "description": "Количество открытых писем"
+        }
+        "Price": {
+            "description": "Стоимость рассылки, руб."
+        }
+        "DateOfStart": {
+            "description": "Дата запуска рассылки"
+        }
+    }
+},
+{
+    "description": "Получить информацию о доставляемости писем",
+    "methode": "get",
+    "url": "emailSendings/{id}/recipients",
+    "patern": {
+        "Id": {
+            "optional:" false,
+            "description": "Идентификатор email-рассылки. Его можно получить с помощью метода <a href='#descriptionGetEmailSendings'>GET: /emailSendings</a>"
+        }
+    },
+    return_value:{
+        "Items": {
+            "description": "Выбранное подмножество элементов"
+        }
+        "Email": {
+            "description": "Электронный адрес получателя"
+        }
+        "IsDelivered": {
+            "description": "Доставлено письмо? True - Да, False - Нет"
+        }
+        "IsBounced": {
+            "description": "Отклонено письмо? True - Да, False - Нет"
+        }
+        "IsOpened": {
+            "description": "Было ли открыто письмо? True - Да, False - Нет"
+        }
+        "IsClicked": {
+            "description": "Был ли клик в письме по ссылкам? True - Да, False - Нет"
+        }
+        "DeliveredOrBouncedDate": {
+            "description": "Дата и время доставки/отклонения письма"
+        }
+        "OpenedDate": {
+            "description": "Дата и время открытия письма"
+        }
+        "СlickedDate": {
+            "description": "Дата и время первого клика в письме"
+        }
+        "СlickedUrls": {
+            "description": "Список ссылок, по которым был произведен клик в письме"
+        }
+    }
+},
+{
+    "description": "Получить информацию о доставляемости письма на конкретный электронный адрес",
+    "methode": "get",
+    "url": "emailSendings/{id}/recipients/{email}",
+    "patern": {
+        "Id": {
+            "optional:" false,
+            "description": "Идентификатор email-рассылки. Его можно получить с помощью метода <a href='#descriptionGetEmailSendings'>GET: /emailSendings</a>"
+        },
+        "Email": {
+            "optional:" false,
+            "description": "Электронный адрес получателя"
+        }
+    },
+    return_value:{
+        "Email": {
+            "description": "Электронный адрес получателя"
+        },
+        "IsDelivered": {
+            "description": "Доставлено письмо? True - Да, False - Нет"
+        }
+        "IsBounced": {
+            "description": "Отклонено письмо? True - Да, False - Нет"
+        }
+        "IsOpened": {
+            "description": "Было ли открыто письмо? True - Да, False - Нет"
+        }
+        "IsClicked": {
+            "description": "Был ли клик в письме по ссылкам? True - Да, False - Нет"
+        }
+        "DeliveredOrBouncedDate": {
+            "description": "Дата и время доставки/отклонения письма"
+        }
+        "OpenedDate": {
+            "description": "Дата и время открытия письма"
+        }
+        "СlickedDate": {
+            "description": "Дата и время первого клика в письме"
+        }
+        "СlickedUrls": {
+            "description": "Список ссылок, по которым был произведен клик в письме"
+        }
+    }
+}

@@ -1,0 +1,230 @@
+{
+    "description": "Получить информацию об отправленных одиночных СМС-сообщениях в порядке от новых к старым",
+    "methode": "get",
+    "url": "singleSms",
+    "patern": {
+        "StartUtcDateTime": {
+            "optional:" false,
+            "description": "Фильтр по дате, нижняя граница (UTC)"
+        },
+        "EndUtcDateTime": {
+            "optional:" false,
+            "description": "Фильтр по дате, верхняя граница (UTC)"
+        },
+        "SenderId": {
+            "optional:" false,
+            "description": "Фильтр по имени отправителя СМС"
+        },
+        "PhoneNumber": {
+            "optional:" false,
+            "description": "Фильтр по номеру телефона"
+        },
+        "Offset": {
+            "optional:" false,
+            "description": "Количество начальных элементов в результате, которые надо пропустить"
+        },
+        "Limit": {
+            "optional:" false,
+            "description": "Количество элементов, которые необходимо вернуть (максимум &#8212; 500, по умолчанию &#8212; 50)"
+        }
+    },
+    return_value:{
+        "Items": {
+            "description": "Выбранное подмножество элементов"
+        },
+        "Id": {
+            "description": "Идентификатор СМС-сообщения"
+        },
+        "PlannedUtcDateTime": {
+            "description": "Планируемое время отправки (UTC)"
+        },
+        "DeliveryUtcDateTime": {
+            "description": "Время доставки (UTC)"
+        },
+        "Status": {
+            "description": "Статус доставки, принимает значения: Enroute, Delivered, Undeliverable"
+        },
+        "SenderId": {
+            "description": "Имя отправителя (Sender ID)"
+        }
+        "PhoneNumber": {
+            "description": "Номер телефона получателя"
+        }
+        "Cost": {
+            "description": "Стоимость отправки, руб."
+        }
+        "Text": {
+            "description": "Текст СМС"
+        }
+        "Total": {
+            "description": "Общее количество элементов"
+        }
+    }
+},
+{
+    "description": "Отправить одиночное СМС-сообщение",
+    "methode": "post",
+    "url": "singleSms",
+    "patern": {
+        "SenderId": {
+            "optional:" false,
+            "description": "Имя отправителя СМС. Доступные имена отправителя можно узнать с помощью метода <a href='descriptionGetSmsSenderIds'>GET: /smsSenderIds</a>"
+        },
+        "SendDateTime": {
+            "optional:" false,
+            "description": "Дата и время, в которое следует отправить СМС. Оставьте пустым для немедленной отправки. При UseRecepientTimeZone = True укажите здесь время в часовой зоне абонента. Иначе укажите здесь время UTC"
+        },
+        "UseRecepientTimeZone": {
+            "optional:" false,
+            "description": "True &#8212; если следует отправлять СМС по местному времени абонента"
+        },
+        "PhoneNumber": {
+            "optional:" false,
+            "description": "Номер телефона, на который нужно отправить сообщение"
+        },
+        "Text": {
+            "optional:" false,
+            "description": "Текст СМС"
+        }
+    },
+    return_value:{
+        "Id": {
+            "description": "Идентификатор СМС-сообщения"
+        },
+        "PlannedUtcDateTime": {
+            "description": "Планируемое время отправки (UTC)"
+        },
+        "DeliveryUtcDateTime": {
+            "description": "Время доставки (UTC)"
+        },
+        "Status": {
+            "description": "Статус доставки, принимает значения: Enroute, Delivered, Undeliverable"
+        },
+        "SenderId": {
+            "description": "Имя отправителя (Sender ID)"
+        }
+        "PhoneNumber": {
+            "description": "Номер телефона получателя"
+        }
+        "Cost": {
+            "description": "Стоимость отправки, руб."
+        }
+        "Text": {
+            "description": "Текст СМС"
+        }
+    }
+},
+{
+    "description": "Получить стоимость одиночного СМС-сообщения",
+    "methode": "post",
+    "url": "singleSms/cost",
+    "patern": {
+        "SenderId": {
+            "optional:" false,
+            "description": "Имя отправителя СМС. Доступные имена отправителя можно узнать с помощью метода <a href='descriptionGetSmsSenderIds'>GET: /smsSenderIds</a>"
+        },
+        "PhoneNumber": {
+            "optional:" false,
+            "description": "Номер телефона, на который нужно отправить сообщение"
+        },
+        "Text": {
+            "optional:" false,
+            "description": "Текст СМС"
+        }
+    },
+    return_value:{
+        "SegmentsCount": {
+            "description": "Количество сегментов в СМС"
+        },
+        "TextLength": {
+            "description": "Длина текста СМС"
+        },
+        "Cost": {
+            "description": "Цена за СМС"
+        }
+        "CleanedText": {
+            "description": "Цена за СМС"
+        }
+    }
+},
+{
+    "description": "Отправить одиночные СМС-сообщение (одинаковый текст на несколько номеров)",
+    "methode": "post",
+    "url": "singleSms/multiple",
+    "patern": {
+        "PhoneNumbers": {
+            "optional:" false,
+            "description": "Номера телефонов, на которые нужно отправить сообщения"
+        },
+        "Text": {
+            "optional:" false,
+            "description": "Текст СМС"
+        },
+        "SenderId": {
+            "optional:" false,
+            "description": "Имя отправителя СМС. Доступные имена отправителя можно узнать с помощью метода <a href='#descriptionGetSmsSenderIds'>GET: /smsSenderIds</a>"
+        },
+        "SendDateTime": {
+            "optional:" false,
+            "description": "Дата и время, в которое следует отправить СМС. Оставьте пустым для немедленной отправки. При UseLocalTimeZone = True укажите здесь время в часовой зоне абонента. Иначе укажите здесь время UTC"
+        },
+        "UseRecepientTimeZone": {
+            "optional:" false,
+            "description": "True &#8212; если следует отправлять СМС по местному времени абонента"
+        }
+    },
+    return_value:{
+        "PhoneNumbers": {
+            "description": "Номера телефонов, на которые нужно отправить сообщения"
+        },
+        "Text": {
+            "description": "Текст СМС"
+        },
+        "SenderId": {
+            "description": "Имя отправителя СМС. Доступные имена отправителя можно узнать с помощью метода <a href='#descriptionGetSmsSenderIds'>GET: /smsSenderIds</a>"
+        },
+        "SendDateTime": {
+            "description": "Дата и время, в которое следует отправить СМС. Оставьте пустым для немедленной отправки. При UseLocalTimeZone = True укажите здесь время в часовой зоне абонента. Иначе укажите здесь время UTC"
+        },
+        "UseRecepientTimeZone": {
+            "description": "True &#8212; если следует отправлять СМС по местному времени абонента"
+        }
+    }
+},
+{
+    "description": "Получить информацию о конкретном одиночном СМС-сообщении",
+    "methode": "get",
+    "url": "singleSms/{id}",
+    "patern": {
+        "Id": {
+            "optional:" false,
+            "description": "Идентификатор одиночного СМС-сообщения. Его можно получить с помощью метода <a href='#descriptionGetSingleSms'>GET: /singleSms"
+        }
+    },
+    return_value:{
+        "Id": {
+            "description": "Идентификатор СМС-сообщения"
+        }
+        "PlannedUtcDateTime": {
+            "description": "Планируемое время отправки (UTC)"
+        }
+        "DeliveryUtcDateTime": {
+            "description": "Время доставки (UTC)"
+        }
+        "Status": {
+            "description": "Статус доставки, принимает значения: Enroute, Delivered, Undeliverable"
+        }
+        "SenderId": {
+            "description": "Имя отправителя (Sender ID)"
+        }
+        "PhoneNumber": {
+            "description": "Номер телефона получателя"
+        }
+        "Cost": {
+            "description": "Стоимость отправки, руб."
+        }
+        "Text": {
+            "description": "Текст СМС"
+        }
+    }
+}

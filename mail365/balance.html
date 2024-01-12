@@ -1,0 +1,103 @@
+{
+    "description": "Получить текущее значение баланса в рублях",
+    "methode": "get",
+    "url": "balance",
+    "patern": {
+    },
+    return_value:{
+            "description": "Текущее значение баланса в рублях"
+,
+    }
+},
+{
+    "description": "Получить историю заказов/платежей, начиная с недавних",
+    "methode": "get",
+    "url": "balance/payments",
+    "patern": {
+        "Offset": {
+            "optional:" false,
+            "description": "Количество начальных элементов в результате, которые надо пропустить"
+        },
+        "Limit": {
+            "optional:" false,
+            "description": "Количество элементов, которые необходимо вернуть (максимум &#8212; 500, по умолчанию &#8212; 50)"
+        }
+    },
+    return_value:{
+        "Items": {
+            "description": "Выбранное подмножество элементов"
+        },
+        "PaymentDate": {
+            "description": "Дата оплаты счёта"
+        }
+        "Type": {
+            "description": "Способ оплаты, принимает значения: BankwireTransfer, RobokassaVisaMasterCard, RobokassaQiwi, RobokassaWebMoneyR, RobokassaYandexMoneyR, RobokassaWebMoneyZ"
+        }
+        "Amount": {
+            "description": "Сумма счёта"
+        }
+        "BonusAmount": {
+            "description": "Сумма бонуса"
+        }
+        "BillNo": {
+            "description": "Номер счёта"
+        }
+        "CreationDate": {
+            "description": "Дата создания счёта"
+        }
+        "State": {
+            "description": "Состояние счёта, принимает значения: Advanced, Paid, SentDocuments, ReceivedAct"
+        }
+        "Total": {
+            "description": "Общее количество элементов"
+        }
+    }
+},
+{
+    "description": "Получить текущий тариф",
+    "methode": "get",
+    "url": "balance/tariff",
+    "patern": {
+    },
+    return_value:{
+        "Title": {
+            "description": "Название тарифа"
+        },
+        "PricePerSms": {
+            "description": "Цена за 1 СМС, руб."
+        },
+        "PricePerEmail": {
+            "description": "Цена за 1 email, руб."
+        },
+        "MinPayment": {
+            "description": "Минимальная сумма платежа для установки тарифа"
+        },
+    }
+},
+{
+    "description": "Получить все тарифы, доступные пользователю",
+    "methode": "get",
+    "url": "balance/tariffs",
+    "patern": {
+    },
+    return_value:{
+        "Items": {
+            "description": "Выбранное подмножество элементов"
+        },
+        "Title": {
+            "description": "Название тарифа"
+        },
+        "PricePerSms": {
+            "description": "Цена за 1 СМС, руб."
+        },
+        "PricePerEmail": {
+            "description": "Цена за 1 email, руб."
+        },
+        "MinPayment": {
+            "description": "Минимальная сумма платежа для установки тарифа"
+        },
+        "Total": {
+            "description": "Общее количество элементов"
+        },
+    }
+}

@@ -1,0 +1,75 @@
+{
+    "description": "Изменить данные контакта",
+    "methode": "post",
+    "url": "contacts/{id}",
+    "patern": {
+        "Id": {
+            "optional:" false,
+            "description": "Идентификатор контакта Его можно получить с помощью метода <a href='#descriptionGetContactGroupsIdContacts'>GET: /contactGroups/{id}/contacts</a>"
+        }
+    },
+    return_value:{
+        "Data": {
+            "description": "Данные записи о контакте (имя, фамилия, номер телефона и прочее)"
+        }
+        "PhoneNumberInBlackList": {
+            "description": "True &#8212; если номер телефона занесён в чёрный список"
+        }
+        "EmailInBlackList": {
+            "description": "True &#8212; если email-адрес занесён в чёрный список"
+        }
+        "Id": {
+            "description": "Идентификатор контакта"
+        }
+    }
+},
+{
+    "description": "Изменить данные контакта",
+    "methode": "put",
+    "url": "contacts/{id}",
+    "patern": {
+        "Id": {
+            "optional:" false,
+            "description": "Идентификатор контакта. Его можно получить с помощью метода <a href='#descriptionGetContactGroupsIdContacts'>GET: /contactGroups/{id}/contacts</a>"
+        }
+    },
+    return_value:{
+        "Data": {
+            "description": "Данные записи о контакте (имя, фамилия, номер телефона и прочее)"
+        }
+        "PhoneNumberInBlackList": {
+            "description": "True &#8212; если номер телефона занесён в чёрный список"
+        }
+        "EmailInBlackList": {
+            "description": "True &#8212; если email-адрес занесён в чёрный список"
+        }
+        "Id": {
+            "description": "Идентификатор контакта"
+        }
+    }
+},
+{
+    "description": "Получить информацию о конкретном контакте",
+    "methode": "get",
+    "url": "contacts/{id}",
+    "patern": {
+        "Id": {
+            "optional:" false,
+            "description": "Идентификатор контакта. Его можно получить с помощью метода <a href='#descriptionGetContactGroupsIdContacts'>GET: /contactGroups/{id}/contacts</a>"
+        }
+    },
+    return_value:{
+        "Data": {
+            "description": "Данные записи о контакте (имя, фамилия, номер телефона и прочее)"
+        }
+        "PhoneNumberInBlackList": {
+            "description": "True &#8212; если номер телефона занесён в чёрный список"
+        }
+        "EmailInBlackList": {
+            "description": "True &#8212; если email-адрес занесён в чёрный список"
+        }
+        "Id": {
+            "description": "Идентификатор контакта"
+        }
+    }
+}
