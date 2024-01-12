@@ -245,8 +245,6 @@ std::string mail365::getInfo(
                         + "\n" + space + space + "}" + end + "\n"
                 );
             }
-            // ToDo Если нет name то выводить description без скобок
-            
             iter++;
         }
         ret_value.append(space + "}\n}");
