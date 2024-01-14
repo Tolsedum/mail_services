@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <vector>
 #include <curl/curl.h>
 
 
@@ -17,6 +18,6 @@ struct Params{
 
 size_t write_data(void* ptr, size_t size, size_t nmemb, FILE* stream);
 std::string getHttpPage(std::string url, std::string file_name);
-
+std::string removeSymbolse(std::string str, char simbol);
 
 #endif /* FUNCTIONS_HPP */

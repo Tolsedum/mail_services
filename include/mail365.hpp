@@ -8,6 +8,7 @@
 #include "functions.hpp"
 
 namespace mail365{
+    std::string getSpace(short count);
     struct ReturnsParams{
         std::string block_name;
         std::string content;

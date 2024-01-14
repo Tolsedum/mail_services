@@ -39,15 +39,17 @@ void mail365::createJsonApiFile(std::string file_name){
                 }
             }
             for(auto var : conteiner){
-                std::string content;
+                std::string content("[\n");
                 for(auto params : var.second){
                     content.append(params.content);
                     content.append(",\n");
                 }
                 content.erase(content.size() - 2, content.size());
-                std::cout<< path + "/" + var.first + ".html" << std::endl;
+                content.append(getSpace(1) + "\n]");
 
-                std::ofstream out(path + "/" + var.first + ".html", std::ios::trunc);
+                std::cout<< path + "/" + var.first + ".json" << std::endl;
+                
+                std::ofstream out(path + "/" + var.first + ".json", std::ios::trunc);
                 if(out.is_open()){
                     out << content;
                 }
@@ -81,7 +83,7 @@ mail365::ReturnsParams mail365::parsStepByLi(std::shared_ptr<dom::Node> li){
                 std::list<std::shared_ptr<dom::Node>> tab = 
                     blockquote->getElementsByTagName("tbody");
                 if(!tab.empty()){
-                    descr_func = ps.front()->getInnerHtml();
+                    descr_func = removeSymbolse(ps.front()->getInnerHtml(), '\n');
                     
                     int count_iter = 0;
                     auto iter = ps.begin();
@@ -123,13 +125,6 @@ mail365::ReturnsParams mail365::parsStepByLi(std::shared_ptr<dom::Node> li){
             request_params,
             response_params
         ));
-        if(ret_value.block_name == "balance"){
-            std::ofstream out("test_balance.html", std::ios::trunc);
-            if(out.is_open()){
-                out << ret_value.content;
-            }
-            out.close();
-        }
     }
     return ret_value;
 }
@@ -166,7 +161,8 @@ Params mail365::insertDataInParams(std::shared_ptr<dom::Node> tr){
                 if(iter == 0){
                     params.name_ = td->getInnerHtml();
                 }else if(iter == 1){
-                    std::string descr = td->getInnerHtml();
+                    std::string descr = removeSymbolse(td->getInnerHtml(), '\n');
+
                     std::size_t pos = descr.find('"');
                     if(pos != std::string::npos){
                         while (pos != std::string::npos){
@@ -186,6 +182,15 @@ Params mail365::insertDataInParams(std::shared_ptr<dom::Node> tr){
     return params;
 }
 
+std::string mail365::getSpace(short count){
+    std::string space = "    ";
+    std::string ret_value;
+    for (short i = 0; i < count; i++){
+        ret_value.append(space);
+    }
+    return ret_value;
+}
+
 std::string mail365::getInfo(
     std::string methode, 
     std::string url, 
@@ -193,16 +198,15 @@ std::string mail365::getInfo(
     std::vector<Params> request_params,
     std::vector<Params> response_params
 ){
-    std::string ret_value = "{\n";
-    std::string space = "    ";
+    std::string ret_value = getSpace(1) + "{\n";
     ret_value.append(
-        space + "\"description\": \"" + descr_func + "\",\n"
-            + space + "\"methode\": \"" 
+        getSpace(2) + "\"description\": \"" + descr_func + "\",\n"
+            + getSpace(2) + "\"methode\": \"" 
             + boost::algorithm::to_lower_copy(methode)
             + "\",\n"
-        + space + "\"url\": \"" + url + "\",\n"
+        + getSpace(2) + "\"url\": \"" + url + "\",\n"
     );
-    ret_value.append(space + "\"patern\": {\n");
+    ret_value.append(getSpace(2) + "\"patern\": {\n");
     std::size_t iter = 0;
     for(auto var : request_params){
         std::string end = "";
@@ -214,40 +218,40 @@ std::string mail365::getInfo(
             end = ",";
         }
         ret_value.append(
-            space + space + "\"" + var.name_ + "\": {\n" 
-                + space + space + space + "\"optional:\" " +  optional + ",\n"
-                + space + space + space + "\"description\": " + "\"" + var.description_ + "\""
-                + "\n" + space + space + "}" + end + "\n"
+            getSpace(3) + "\"" + var.name_ + "\": {\n" 
+                + getSpace(4) + "\"optional\": " +  optional + ",\n"
+                + getSpace(4) + "\"description\": " + "\"" + var.description_ + "\""
+                + "\n" + getSpace(3) + "}" + end + "\n"
         );
         iter++;
     }
-    ret_value.append(space + "}");
+    ret_value.append(getSpace(2) + "}");
 
     if(!response_params.empty()){
-        ret_value.append(",\n" + space + "return_value:{\n");
+        ret_value.append(",\n" + getSpace(2) + "\"return_value\":{\n");
         iter = 0;
         for(Params var : response_params){
             std::string end = "";
-            if(request_params.size() -1 > iter){
+            if(response_params.size() -1 > iter){
                 end = ",";
             }
             if(var.name_.empty()){
                 ret_value.append(
-                    space + space + "\"description\": " 
+                    getSpace(3) + "\"description\": " 
                         + "\"" + var.description_ + "\""
                         + end + "\n"
                 );
             }else{
                 ret_value.append(
-                    space + space + "\"" + var.name_ + "\": {\n" 
-                        + space + space + space + "\"description\": " 
+                    getSpace(3) + "\"" + var.name_ + "\": {\n" 
+                        + getSpace(4) + "\"description\": " 
                         + "\"" + var.description_ + "\""
-                        + "\n" + space + space + "}" + end + "\n"
+                        + "\n" + getSpace(3) + "}" + end + "\n"
                 );
             }
             iter++;
         }
-        ret_value.append(space + "}\n}");
+        ret_value.append(getSpace(2) + "}\n" + getSpace(1)+ "}");
     }
     return ret_value;
 }
