@@ -23,13 +23,16 @@ std::string getHttpPage(std::string url, std::string file_name){
     return content;
 }
 
-std::string removeSymbolse(std::string str, char simbol){
-    std::size_t pos = str.find(simbol);
-    if(pos != std::string::npos){
-        while (pos != std::string::npos){
-            str.replace(pos, 1, "");
-            pos = str.find(simbol, pos++);
-        }
+std::string removeSymbolse(std::string str, std::string simbol){
+    std::size_t pos = 0;;
+    while ((pos = str.find(simbol)) != std::string::npos)
+        str.replace(pos, 1, "");
+    return str;
+}
+
+std::string removeSymbolse(std::string str, std::vector<std::string> simbol){
+    for(auto c : simbol){
+        str = removeSymbolse(str, c);
     }
     return str;
 }

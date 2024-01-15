@@ -83,7 +83,7 @@ mail365::ReturnsParams mail365::parsStepByLi(std::shared_ptr<dom::Node> li){
                 std::list<std::shared_ptr<dom::Node>> tab = 
                     blockquote->getElementsByTagName("tbody");
                 if(!tab.empty()){
-                    descr_func = removeSymbolse(ps.front()->getInnerHtml(), '\n');
+                    descr_func = removeSymbolse(ps.front()->getInnerHtml(), {"\n", "\r", "\t", "\v"});
                     
                     int count_iter = 0;
                     auto iter = ps.begin();
@@ -161,7 +161,7 @@ Params mail365::insertDataInParams(std::shared_ptr<dom::Node> tr){
                 if(iter == 0){
                     params.name_ = td->getInnerHtml();
                 }else if(iter == 1){
-                    std::string descr = removeSymbolse(td->getInnerHtml(), '\n');
+                    std::string descr = removeSymbolse(td->getInnerHtml(), {"\n", "\r", "\t", "\v"});
 
                     std::size_t pos = descr.find('"');
                     if(pos != std::string::npos){

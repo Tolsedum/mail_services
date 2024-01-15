@@ -34,3 +34,4 @@
 /output/*
 /src/dom/*
 /src/parser/*
+/.vscode/*
