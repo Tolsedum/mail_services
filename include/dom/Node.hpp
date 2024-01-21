@@ -1,9 +1,12 @@
+#ifndef DAD6C6BC_9785_477E_8963_774E8570CBDB
+#define DAD6C6BC_9785_477E_8963_774E8570CBDB
 #ifndef DOM_ELEMENT_HPP
 #define DOM_ELEMENT_HPP
 
 #include <map>
 #include <vector>
 #include <list>
+#include <map>
 #include <stack>
 #include <string>
 #include <iostream>
@@ -74,6 +77,11 @@ namespace dom{
         bool is_deleted_;
         
         int current_num_;
+
+        /**
+         * @brief Position in string inner_HTML_
+         */
+        std::size_t next_position_;
         /**
          * @brief tag name node
          */
@@ -89,7 +97,7 @@ namespace dom{
         /**
          * @brief all nods locate inside with this node
          */
-        std::list<std::shared_ptr<Node>> node_list_;
+        std::map<int, std::shared_ptr<Node>> node_list_;
 
         /**
          * @brief Convert attributs to string
@@ -124,7 +132,15 @@ namespace dom{
          * @param tag_name 
          */
         void extractAllTagsByName(std::string tag_name);
-        
+
+        /**
+         * @brief To determine the lable number, from the position
+         * 
+         * @param end_l_pos 
+         * @return int 
+         */
+        int getNumberByLablePosition(std::size_t end_l_pos, std::string lable);
+
     public:
         Node(){};
         Node(
@@ -141,7 +157,7 @@ namespace dom{
         
         void setTagName(std::string tag_name);
         void setInnerHtml(std::string inner_HTML);
-        void setCurrentNum(int num);
+        // void setCurrentNum(int num);
 
         bool isNotDeleted();
         bool hasElementByName(std::string name_element);
@@ -198,8 +214,27 @@ namespace dom{
          * @return std::list<std::string> 
          */
         std::list<std::string> getListAttributsName();
+
+        /**
+         * @brief Get next element in content (innerHtml)
+         * 
+         * @return std::shared_ptr<Node> 
+         */
+        std::shared_ptr<Node> nextTagInInnerHtml();
+
+        /**
+         * @brief Get the list node object from innerHtml
+         * 
+         * @return std::list<int> 
+         */
+        std::list<int> getListNode();
+
+        void push_back(std::shared_ptr<Node> &&node);
     };
 };
 
 
 #endif /* DOM_ELEMENT_HPP */
+
+
+#endif /* DAD6C6BC_9785_477E_8963_774E8570CBDB */

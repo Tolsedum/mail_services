@@ -2,7 +2,6 @@
 #define DOM_DOM_DOCUMENT_HPP
 
 #include <fstream>
-#include <list>
 #include <memory>
 #include "parser/info.hpp"
 #include "dom/Node.hpp"
@@ -10,7 +9,7 @@
 namespace dom{
     class DomDocument{
         std::string type_document_;
-        std::list<std::shared_ptr<Node>> dom_list_;
+        std::map<int, std::shared_ptr<Node>> dom_list_;
 
     public:
         DomDocument(){};

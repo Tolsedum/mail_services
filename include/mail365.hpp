@@ -35,6 +35,8 @@ namespace mail365{
         std::vector<Params> request_params,
         std::vector<Params> response_params
     );
+
+    ReturnsParams parsByBlockQuote(std::shared_ptr<dom::Node> block);
 }
 
 

@@ -59,6 +59,67 @@ void mail365::createJsonApiFile(std::string file_name){
     }
 }
 
+mail365::ReturnsParams 
+mail365::parsByBlockQuote(std::shared_ptr<dom::Node> block){
+    ReturnsParams ret_value;
+    std::string methode, url, descr_func;
+    std::vector<Params> request_params;
+    std::vector<Params> response_params;
+
+    std::shared_ptr<dom::Node> element = block->nextTagInInnerHtml();
+    descr_func = removeSymbolse(element->getInnerHtml(), {"\n", "\r", "\t", "\v"});
+
+    if(descr_func == "Добавить в группу новый контакт"){
+        for (size_t i = 0; i < 10; i++){
+            element = block->nextTagInInnerHtml();
+            if(element != nullptr){
+                std::cout<< element->getInnerHtml() << std::endl;
+
+                if(element->getInnerHtml() == "Ответ"){
+                    std::cout<< element->getTagName() << "Ответ" << std::endl;
+                }
+
+                if(element->getTagName() == "table"){
+                    
+                    std::list<std::shared_ptr<dom::Node>> trs = 
+                        element->getElementsByTagName("tr");
+                    if(!trs.empty()){
+                        int count_iter = 0;
+                        for(std::shared_ptr<dom::Node> tr : trs){
+                            if(count_iter > 0){
+                                // request_params.push_back(
+                                    auto pars = insertDataInParams(tr);
+                                // );
+                                std::cout << pars.name_ << std::endl;
+                            }else{
+                                count_iter++;
+                            }
+                        }
+                    }
+                    
+                    std::cout<< element->getTagName() << std::endl;
+                }
+            }else{
+                std::cout<< "break" << std::endl;
+                break;
+            }
+        }
+        
+        
+        
+    }
+    
+
+    // ret_value.content.append(getInfo(
+    //     methode, 
+    //     url, 
+    //     descr_func,
+    //     request_params,
+    //     response_params
+    // ));
+    return ret_value;
+}
+
 mail365::ReturnsParams mail365::parsStepByLi(std::shared_ptr<dom::Node> li){
     ReturnsParams ret_value;
     if(li != nullptr){
@@ -75,7 +136,7 @@ mail365::ReturnsParams mail365::parsStepByLi(std::shared_ptr<dom::Node> li){
         ret_value.block_name = url.replace(0,1, "");
 
         std::shared_ptr<dom::Node> blockquote = li->getElementByTagName("blockquote");
-        if(blockquote != nullptr){
+        if(false && blockquote != nullptr){
             std::list<std::shared_ptr<dom::Node>> ps = blockquote
                 ->getElementsByTagName("p");
             
@@ -83,7 +144,8 @@ mail365::ReturnsParams mail365::parsStepByLi(std::shared_ptr<dom::Node> li){
                 std::list<std::shared_ptr<dom::Node>> tab = 
                     blockquote->getElementsByTagName("tbody");
                 if(!tab.empty()){
-                    descr_func = removeSymbolse(ps.front()->getInnerHtml(), {"\n", "\r", "\t", "\v"});
+                    descr_func = removeSymbolse(ps.front()
+                        ->getInnerHtml(), {"\n", "\r", "\t", "\v"});
                     
                     int count_iter = 0;
                     auto iter = ps.begin();
@@ -116,6 +178,8 @@ mail365::ReturnsParams mail365::parsStepByLi(std::shared_ptr<dom::Node> li){
                     }
                 }
             }
+        }else{
+            ret_value = parsByBlockQuote(blockquote);
         }
         
         ret_value.content.append(getInfo(
