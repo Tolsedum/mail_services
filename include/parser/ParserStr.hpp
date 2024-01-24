@@ -91,7 +91,8 @@ namespace parser{
         std::string getTagNextName(std::size_t pos = 0);
 
         /**
-         * @brief if the cursor position is further than the tag name, find the tag name
+         * @brief if the cursor position is further than the tag name, 
+         * find the tag name
          * 
          * @param content 
          * @param pos 
@@ -160,8 +161,10 @@ namespace parser{
          * @param tag_id 
          * @return DataElement 
          */
-        DataElement getTagById(
-            std::string tag_id
+        DataElement getTagByNameAttribut(
+            std::string tag_id,
+            std::string name_attribut = "id",
+            std::size_t pos = 0
         );
 
         /**

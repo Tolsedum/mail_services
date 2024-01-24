@@ -175,7 +175,7 @@ namespace dom{
         std::string toString();
 
         /**
-         * @brief Get the attribut by name from innerHTML_ or node_list_
+         * @brief Get the attribut by name
          * 
          * @param name_attr 
          * @return std::string 
@@ -207,6 +207,17 @@ namespace dom{
         std::list<std::shared_ptr<Node>> getElementsByTagName(
             std::string tag_name
         );
+
+        /**
+         * @brief Get the elements by attribut name and value
+         * 
+         * @param attribut_name 
+         * @return std::list<std::shared_ptr<Node>> 
+         */
+        std::list<std::shared_ptr<Node>> getElementsByAttributName(
+            std::string attribut_name, std::string attribut_value = ""
+        );
+
 
         /**
          * @brief Get the list attributs name from innerHTML_ or node_list_

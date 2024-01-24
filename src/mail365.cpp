@@ -26,7 +26,9 @@ void mail365::createJsonApiFile(std::string file_name){
         std::shared_ptr<dom::Node> methods = (*body).getElementById("methods");
         if(methods != nullptr){
             std::map<std::string, std::vector<ReturnsParams>> conteiner;
-            for(std::shared_ptr<dom::Node> li : methods->getElementsByTagName("li")){
+            std::list<std::shared_ptr<dom::Node>> list =
+                methods->getElementsByTagName("li"); 
+            for(std::shared_ptr<dom::Node> li : list){
                 ReturnsParams params = parsStepByLi(li);
                 std::string block_name = getMainBlockName(params.block_name);
                 if(
@@ -59,73 +61,13 @@ void mail365::createJsonApiFile(std::string file_name){
     }
 }
 
-mail365::ReturnsParams 
-mail365::parsByBlockQuote(std::shared_ptr<dom::Node> block){
-    ReturnsParams ret_value;
-    std::string methode, url, descr_func;
-    std::vector<Params> request_params;
-    std::vector<Params> response_params;
-
-    std::shared_ptr<dom::Node> element = block->nextTagInInnerHtml();
-    descr_func = removeSymbolse(element->getInnerHtml(), {"\n", "\r", "\t", "\v"});
-
-    if(descr_func == "Добавить в группу новый контакт"){
-        for (size_t i = 0; i < 10; i++){
-            element = block->nextTagInInnerHtml();
-            if(element != nullptr){
-                std::cout<< element->getInnerHtml() << std::endl;
-
-                if(element->getInnerHtml() == "Ответ"){
-                    std::cout<< element->getTagName() << "Ответ" << std::endl;
-                }
-
-                if(element->getTagName() == "table"){
-                    
-                    std::list<std::shared_ptr<dom::Node>> trs = 
-                        element->getElementsByTagName("tr");
-                    if(!trs.empty()){
-                        int count_iter = 0;
-                        for(std::shared_ptr<dom::Node> tr : trs){
-                            if(count_iter > 0){
-                                // request_params.push_back(
-                                    auto pars = insertDataInParams(tr);
-                                // );
-                                std::cout << pars.name_ << std::endl;
-                            }else{
-                                count_iter++;
-                            }
-                        }
-                    }
-                    
-                    std::cout<< element->getTagName() << std::endl;
-                }
-            }else{
-                std::cout<< "break" << std::endl;
-                break;
-            }
-        }
-        
-        
-        
-    }
-    
-
-    // ret_value.content.append(getInfo(
-    //     methode, 
-    //     url, 
-    //     descr_func,
-    //     request_params,
-    //     response_params
-    // ));
-    return ret_value;
-}
-
 mail365::ReturnsParams mail365::parsStepByLi(std::shared_ptr<dom::Node> li){
     ReturnsParams ret_value;
     if(li != nullptr){
         std::string methode, url, descr_func;
         std::vector<Params> request_params;
         std::vector<Params> response_params;
+        std::vector<Params> *point_params = nullptr;
 
         setMethodeAndUrlFromH4(
             li->getElementByTagName("h4")
@@ -134,52 +76,39 @@ mail365::ReturnsParams mail365::parsStepByLi(std::shared_ptr<dom::Node> li){
             url
         ); 
         ret_value.block_name = url.replace(0,1, "");
+        std::shared_ptr<dom::Node> block = li->getElementByTagName("blockquote");
+        std::shared_ptr<dom::Node> element = block->nextTagInInnerHtml();
+        descr_func = removeSymbolse(element->getInnerHtml(), {"\n", "\r", "\t", "\v"});
 
-        std::shared_ptr<dom::Node> blockquote = li->getElementByTagName("blockquote");
-        if(false && blockquote != nullptr){
-            std::list<std::shared_ptr<dom::Node>> ps = blockquote
-                ->getElementsByTagName("p");
-            
-            if(!ps.empty()){
-                std::list<std::shared_ptr<dom::Node>> tab = 
-                    blockquote->getElementsByTagName("tbody");
-                if(!tab.empty()){
-                    descr_func = removeSymbolse(ps.front()
-                        ->getInnerHtml(), {"\n", "\r", "\t", "\v"});
-                    
-                    int count_iter = 0;
-                    auto iter = ps.begin();
-                    iter++;
-                    if(iter->get()->getInnerHtml() != "Ответ"){
-                        for(std::shared_ptr<dom::Node> tr : tab.front()
-                            ->getElementsByTagName("tr")
-                        ){
+        for (size_t i = 0; i < 15; i++){
+            element = block->nextTagInInnerHtml();
+            if(element != nullptr){
+                if(element->getInnerHtml() == "Параметры запроса"){
+                    point_params = &request_params;
+                }else if(element->getInnerHtml() == "Ответ"){
+                    point_params = &response_params;
+                }
+
+                if(element->getTagName() == "table"){
+                    std::list<std::shared_ptr<dom::Node>> trs = 
+                        element->getElementsByTagName("tr");
+                    if(!trs.empty()){
+                        int count_iter = 0;
+                        for(std::shared_ptr<dom::Node> tr : trs){
                             if(count_iter > 0){
-                                request_params.push_back(
-                                    insertDataInParams(tr)
+                                auto inserted_param = insertDataInParams(tr);
+                                point_params->push_back(
+                                    inserted_param
                                 );
                             }else{
                                 count_iter++;
                             }
                         }
                     }
-                    
-                    count_iter = 0;
-                    for(std::shared_ptr<dom::Node> tr : tab.back()
-                        ->getElementsByTagName("tr")
-                    ){
-                        if(count_iter > 0){
-                            response_params.push_back(
-                                insertDataInParams(tr)
-                            );
-                        }else{
-                            count_iter++;
-                        }
-                    }
                 }
+            }else{
+                break;
             }
-        }else{
-            ret_value = parsByBlockQuote(blockquote);
         }
         
         ret_value.content.append(getInfo(
@@ -190,6 +119,7 @@ mail365::ReturnsParams mail365::parsStepByLi(std::shared_ptr<dom::Node> li){
             response_params
         ));
     }
+    
     return ret_value;
 }
 
@@ -291,8 +221,8 @@ std::string mail365::getInfo(
     }
     ret_value.append(getSpace(2) + "}");
 
+    ret_value.append(",\n" + getSpace(2) + "\"return_value\":{\n");
     if(!response_params.empty()){
-        ret_value.append(",\n" + getSpace(2) + "\"return_value\":{\n");
         iter = 0;
         for(Params var : response_params){
             std::string end = "";
@@ -315,7 +245,7 @@ std::string mail365::getInfo(
             }
             iter++;
         }
-        ret_value.append(getSpace(2) + "}\n" + getSpace(1)+ "}");
     }
+    ret_value.append(getSpace(2) + "}\n" + getSpace(1)+ "}");
     return ret_value;
 }
