@@ -41,13 +41,13 @@ void mail365::createJsonApiFile(std::string file_name){
                 }
             }
             for(auto var : conteiner){
-                std::string content("[\n");
+                std::string content("{\n");
                 for(auto params : var.second){
                     content.append(params.content);
                     content.append(",\n");
                 }
                 content.erase(content.size() - 2, content.size());
-                content.append(getSpace(1) + "\n]");
+                content.append(getSpace(1) + "\n}");
 
                 std::cout<< path + "/" + var.first + ".json" << std::endl;
                 
@@ -192,7 +192,11 @@ std::string mail365::getInfo(
     std::vector<Params> request_params,
     std::vector<Params> response_params
 ){
-    std::string ret_value = getSpace(1) + "{\n";
+    std::string ret_value = getSpace(1)
+        + "\"" + boost::algorithm::to_lower_copy(methode) 
+        + "_" 
+        + url
+        + "\": {\n";
     ret_value.append(
         getSpace(2) + "\"description\": \"" + descr_func + "\",\n"
             + getSpace(2) + "\"methode\": \"" 
